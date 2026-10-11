@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>McLearn Media · New Songs</title>
+  <meta name="description" content="New songs from McLearn Media, featuring MP and Michael McLaurin. Books and music out of Brandon, Mississippi." />
+  <meta property="og:type" content="music.musician" />
+  <meta property="og:image" content="og-image.png" />
+  <meta property="og:title" content="New songs from McLearn Media" />
+  <meta property="og:description" content="Featuring MP and Michael McLaurin. Southern soul, gospel blues, trap-soul. One-stop clearance." />
+  <meta name="theme-color" content="#8A3A1A" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238A3A1A'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23FAF1E5'%3EMP%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #15100C;
+      --ink-2: #1E1813;
+      --ink-3: #2A2119;
+      --line: #43362A;
+      --paper: #FAF1E5;
+      --muted: #C9B6A1;
+      --brand: #C45D34;
+      --brand-hi: #E8835A;
+      --gold: #E4B458;
+      --live: #7BD3A4;
+      --serif: "Fraunces", Georgia, serif;
+      --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+      --r: 12px;
+      --r-lg: 18px;
+      --safe-b: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--ink); color-scheme: dark; }
+    body {
+      background:
+        radial-gradient(1100px 620px at 50% -8%, rgba(196,93,52,0.22), transparent 62%),
+        var(--ink);
+      color: var(--paper); font-family: var(--sans); font-size: 16px; line-height: 1.55;
+      -webkit-font-smoothing: antialiased; padding-bottom: calc(96px + var(--safe-b));
+    }
+    button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+    a { color: var(--gold); text-underline-offset: .18em; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    .wrap { width: min(760px, 100%); margin: 0 auto; padding: 0 20px; }
+
+    header { padding: 54px 0 34px; text-align: center; }
+    .mark {
+      display: inline-grid; width: 68px; height: 68px; place-items: center; margin-bottom: 20px;
+      border-radius: 50%; background: var(--brand); color: var(--paper);
+      font-family: var(--serif); font-size: 27px; font-weight: 700; letter-spacing: .04em;
+    }
+    h1 { font-family: var(--serif); font-size: clamp(2.6rem, 9vw, 4rem); font-weight: 500; line-height: 1.02; letter-spacing: -.02em; }
+    .kicker { margin-bottom: 12px; color: var(--brand-hi); font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .feat { margin-top: 14px; color: var(--brand-hi); font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .sub { max-width: 520px; margin: 14px auto 0; color: var(--muted); font-size: 17px; }
+
+    .sitelink { margin-top: 20px; }
+    .dates { display: grid; gap: 10px; margin: 32px 0 8px; }
+    .date {
+      display: grid; grid-template-columns: 88px minmax(0,1fr); gap: 16px; align-items: center;
+      padding: 15px 17px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2);
+    }
+    .date.now { border-color: var(--brand); background: var(--ink-3); }
+    .date-day { font-family: var(--serif); font-size: 15px; font-weight: 600; line-height: 1.2; }
+    .date.now .date-day { color: var(--gold); }
+    .date-list { color: var(--muted); font-size: 14.5px; }
+
+    h2 {
+      display: flex; align-items: center; gap: 14px; margin: 46px 0 18px;
+      color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+    }
+    h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+    .track {
+      display: grid; width: 100%; grid-template-columns: 52px minmax(0,1fr) auto;
+      gap: 15px; align-items: center; padding: 13px 15px; margin-bottom: 9px;
+      border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2);
+      text-align: left; transition: border-color .15s, background .15s, transform .15s;
+    }
+    .track:hover { border-color: var(--brand); background: var(--ink-3); transform: translateY(-1px); }
+    .track[aria-pressed="true"] { border-color: var(--gold); background: var(--ink-3); }
+    .play {
+      display: grid; width: 52px; height: 52px; place-items: center; border-radius: 50%;
+      background: var(--brand); color: var(--paper); flex: 0 0 auto;
+    }
+    .track[aria-pressed="true"] .play { background: var(--gold); color: var(--ink); }
+    .play svg { width: 19px; height: 19px; fill: currentColor; }
+    .t-title { font-family: var(--serif); font-size: 19px; font-weight: 500; line-height: 1.2; }
+    .t-meta { margin-top: 2px; color: var(--muted); font-size: 13px; }
+    .tag {
+      padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+    }
+    .tag.now { border-color: var(--live); color: var(--live); }
+    .tag.next { border-color: var(--gold); color: var(--gold); }
+    .tag.soon { color: var(--muted); }
+    .tag.alt { border-color: var(--brand); color: var(--brand-hi); }
+
+    .bars { display: flex; gap: 3px; align-items: flex-end; height: 16px; }
+    .bars i { width: 3px; background: var(--ink); border-radius: 2px; animation: b .9s ease-in-out infinite; }
+    .bars i:nth-child(2) { animation-delay: .15s } .bars i:nth-child(3) { animation-delay: .3s }
+    .bars i:nth-child(4) { animation-delay: .45s }
+    @keyframes b { 0%,100% { height: 5px } 50% { height: 16px } }
+
+    .everywhere {
+      display: block; margin: -4px 0 12px 67px; padding: 9px 0;
+      color: var(--gold); font-size: 13.5px; font-weight: 700; text-decoration: none;
+    }
+    .everywhere:hover { color: var(--brand-hi); }
+    .panel { padding: 24px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); }
+    .panel h3 { margin-bottom: 10px; font-family: var(--serif); font-size: 22px; font-weight: 500; }
+    .panel p { color: var(--muted); }
+    .panel p + p { margin-top: 11px; }
+    .panel strong { color: var(--paper); }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin-top: 20px; }
+    .fact { padding: 15px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink); }
+    .fact dt { color: var(--muted); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .fact dd { margin-top: 5px; font-family: var(--serif); font-size: 17px; }
+
+    .books { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 11px; margin-top: 20px; }
+    .book {
+      padding: 15px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink);
+    }
+    .bn { display: block; color: var(--brand-hi); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .bt { display: block; margin-top: 5px; font-family: var(--serif); font-size: 17px; line-height: 1.2; }
+    .pend { margin-top: 12px; color: var(--muted); font-size: 13.5px; font-style: italic; }
+    .cta { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 22px; }
+    .btn {
+      display: inline-flex; min-height: 50px; align-items: center; justify-content: center;
+      padding: 12px 22px; border-radius: 999px; font-weight: 700; text-decoration: none;
+    }
+    .btn-a { background: var(--brand); color: var(--paper); }
+    .btn-a:hover { background: var(--brand-hi); color: var(--ink); }
+    .btn-b { border: 1px solid var(--line); color: var(--paper); }
+    .btn-b:hover { border-color: var(--brand); background: var(--ink-3); color: var(--paper); }
+
+    .note {
+      margin-top: 30px; padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--brand);
+      border-radius: var(--r); background: var(--ink-2); color: var(--muted); font-size: 14px;
+    }
+    .tagline { margin-bottom: 10px; color: var(--gold); font-family: var(--serif); font-size: 19px; }
+    footer { margin-top: 48px; padding: 24px 0 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; text-align: center; }
+
+    .dock {
+      position: fixed; z-index: 50; right: 0; bottom: 0; left: 0;
+      display: none; align-items: center; gap: 14px;
+      padding: 12px 20px calc(12px + var(--safe-b));
+      border-top: 1px solid var(--line); background: rgba(21,16,12,.96);
+      backdrop-filter: blur(12px);
+    }
+    .dock.on { display: flex; }
+    .dock-main { min-width: 0; flex: 1; }
+    .dock-t { overflow: hidden; font-family: var(--serif); font-size: 16px; white-space: nowrap; text-overflow: ellipsis; }
+    .dock-s { color: var(--muted); font-size: 12px; }
+    .prog { width: 100%; height: 4px; margin-top: 7px; border-radius: 2px; background: var(--line); overflow: hidden; }
+    .prog i { display: block; height: 100%; width: 0; background: var(--gold); }
+    .dock .play { width: 46px; height: 46px; }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="mark" aria-hidden="true">MP</div>
+      <p class="kicker">New songs from</p>
+      <h1>McLearn Media</h1>
+      <p class="feat">Featuring MP and Michael McLaurin</p>
+      <p class="sub">Southern soul, gospel blues and trap-soul out of Brandon, Mississippi. Written, performed and published by one house.</p>
+      <p class="sitelink"><a class="btn btn-b" href="https://claude.ai/artifact/AsPu7WiGazB4Biq5SRa2CL">Visit McLearn Media &rarr;</a></p>
+    </header>
+
+    <section aria-labelledby="avail">
+      <h2 id="avail">The music</h2>
+      <div class="dates">
+        <div class="date now">
+          <span class="date-day">Available<br />now</span>
+          <span class="date-list">These Regrets · Who Got Your Back · Can I? · Rain and You · TEA · I See You · Who Am I · Hey You · I Can't Tell</span>
+        </div>
+        <div class="date">
+          <span class="date-day">October<br />13</span>
+          <span class="date-list">Thank You</span>
+        </div>
+        <div class="date">
+          <span class="date-day">More to<br />come</span>
+          <span class="date-list">The rest of the catalog, finished or in the chair</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="listen">
+      <h2 id="listen">Listen · 45-second snippets</h2>
+      <div id="tracks"></div>
+      <p class="note"><strong>Alt mix</strong> marks a second recording of the same song &mdash; a different performance, not a different work. Supervisors who want a particular feel can pick between them.<br /><br />These are 45-second excerpts for review. Full-length masters and WAV files are available to programmers and supervisors on request.</p>
+    </section>
+
+    <section aria-labelledby="about">
+      <h2 id="about">For programmers and supervisors</h2>
+      <div class="panel">
+        <h3>One call clears it.</h3>
+        <p>
+          <strong>McLearn Media holds the full publisher share on every title, and Michael Shun McLaurin the full writer share.</strong>
+          There is no co-publisher to chase, no split to reconcile, no third party who has to say yes. A sync, a placement or a
+          license starts and ends in one room.
+        </p>
+        <p>
+          The catalog runs across southern soul, gospel blues, slow ballads and trap-soul. Ten titles release this
+          October. More are finished or in the chair.
+        </p>
+        <dl class="facts">
+          <div class="fact"><dt>Artist</dt><dd>MP</dd></div>
+          <div class="fact"><dt>Publisher</dt><dd>McLearn Media</dd></div>
+          <div class="fact"><dt>Writer</dt><dd>Michael Shun McLaurin</dd></div>
+          <div class="fact"><dt>PRO</dt><dd>BMI</dd></div>
+          <div class="fact"><dt>Based</dt><dd>Brandon, MS</dd></div>
+          <div class="fact"><dt>October releases</dt><dd>10 titles</dd></div>
+        </dl>
+        <div class="cta">
+          <a class="btn btn-a" href="mailto:Mclearn2025@gmail.com?subject=MP%20%E2%80%94%20music%20inquiry">Email McLearn Media</a>
+          <a class="btn btn-b" href="tel:+16018089559">Call 601-808-9559</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="books">
+      <h2 id="books">Also from McLearn Media Publishing</h2>
+      <div class="panel">
+        <h3>A four-book novel series.</h3>
+        <p>
+          Three decades of Rankin County, Mississippi, and the paper that runs underneath it — who signs,
+          who reads, and who remembers. The same house that publishes the music publishes the books.
+        </p>
+        <div class="books">
+          <div class="book"><span class="bn">Book One</span><span class="bt">McLearn Media</span></div>
+          <div class="book"><span class="bn">Book Two</span><span class="bt">The Accidental Executive</span></div>
+          <div class="book"><span class="bn">Book Three</span><span class="bt">The Highway 80 Ledger</span></div>
+          <div class="book"><span class="bn">Book Four</span><span class="bt">The Master's Hand</span></div>
+        </div>
+        <p style="margin-top:18px">
+          <strong>And a Christian book in the works</strong> — <em>Grace Over the Grind</em>, written for
+          personal study and small groups.
+        </p>
+        <p class="pend">Publication details to be announced. Ask for a reader copy.</p>
+        <div class="cta"><a class="btn btn-b" href="https://claude.ai/artifact/AsPu7WiGazB4Biq5SRa2CL">See the Library &rarr;</a></div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="tagline">One Sound. Many Stories.</p>
+      <p>McLearn Media LLC · Brandon, Mississippi</p>
+      <p style="margin-top:7px"><a href="mailto:Mclearn2025@gmail.com">Mclearn2025@gmail.com</a> · <a href="tel:+16018089559">601-808-9559</a></p>
+      <p style="margin-top:9px"><a href="https://claude.ai/artifact/AsPu7WiGazB4Biq5SRa2CL">McLearn Media</a> &middot; <a href="legal.html">Privacy &amp; Terms</a></p>
+    </footer>
+  </div>
+
+  <div class="dock" id="dock" role="region" aria-label="Snippet player">
+    <button class="play" id="dockBtn" type="button" aria-label="Pause">
+      <svg viewBox="0 0 24 24" id="dockIcon" aria-hidden="true"><path d="M6 19h4V5H6zm8-14v14h4V5z" /></svg>
+    </button>
+    <div class="dock-main">
+      <div class="dock-t" id="dockT">—</div>
+      <div class="dock-s" id="dockS">45-second snippet</div>
+      <div class="prog"><i id="dockP"></i></div>
+    </div>
+  </div>
+
+  <p class="sr" id="live" aria-live="polite"></p>
+
+<script>
+(() => {
+  "use strict";
+  /* ----------------------------------------------------------------
+     TOO LOST SMART LINKS
+     As each release goes live, paste its too.fm link beside the title.
+     A track with a link shows a "Listen everywhere" button; a track
+     without one shows nothing extra. This is the only block to edit.
+     ---------------------------------------------------------------- */
+  const LINKS = {
+    "These Regrets":     "",
+    "Who Got Your Back": "",
+    "Can I?":            "",
+    "Rain and You":      "",
+    "TEA":               "",
+    "I See You":         "",
+    "Who Am I":          "",
+    "Hey You":           "",
+    "I Can't Tell":      "",
+    "Thank You":         ""
+  };
+
+  const TRACKS = [
+    { t:"These Regrets",      g:"Southern Soul · 4:10",  w:"now",  d:"Out now", f:"audio/these-regrets.mp3" },
+    { t:"Who Got Your Back",  g:"Soul / Rap · 4:46",     w:"now",  d:"Out now", f:"audio/who-got-your-back.mp3" },
+    { t:"Who Got Your Back",  g:"Flow mix · 5:01",       w:"alt",  d:"Alt mix", f:"audio/who-got-your-back-flow.mp3" },
+    { t:"Can I?",             g:"Southern Soul · 6:27",  w:"now",  d:"Out now", f:"audio/can-i.mp3" },
+    { t:"Rain and You",       g:"Slow Ballad · 4:22",    w:"now",  d:"Out now", f:"audio/rain-and-you.mp3" },
+    { t:"TEA",                g:"Slow Jam · 3:06",       w:"now",  d:"Out now", f:"audio/tea.mp3" },
+    { t:"I See You",          g:"Southern Soul · 4:20",  w:"now",  d:"Out now", f:"audio/i-see-you.mp3" },
+    { t:"I See You",          g:"Alternate version · 4:08", w:"alt", d:"Alt mix", f:"audio/i-see-you-alt.mp3" },
+    { t:"Who Am I",           g:"Slow Ballad · 3:19",    w:"now",  d:"Out now", f:"audio/who-am-i.mp3" },
+    { t:"Hey You",            g:"Rhythm & Soul · 3:02",  w:"now",  d:"Out now", f:"audio/hey-you.mp3" },
+    { t:"I Can't Tell",       g:"Southern Soul · 3:27",  w:"now",  d:"Out now", f:"audio/i-cant-tell.mp3" },
+    { t:"Thank You",          g:"Trap-Soul Duet · 4:02", w:"next", d:"Oct 13",  f:"audio/thank-you-remix.mp3" }
+  ];
+
+  const root = document.getElementById('tracks');
+  const live = document.getElementById('live');
+  const dock = document.getElementById('dock');
+  const dockT = document.getElementById('dockT');
+  const dockP = document.getElementById('dockP');
+  const dockBtn = document.getElementById('dockBtn');
+  const dockIcon = document.getElementById('dockIcon');
+  const PLAY = 'M8 5v14l11-7z';
+  const PAUSE = 'M6 19h4V5H6zm8-14v14h4V5z';
+
+  const audio = new Audio();
+  audio.preload = 'none';
+  let current = -1;
+
+  const say = (m) => { live.textContent = ''; setTimeout(() => live.textContent = m, 20); };
+
+  function paint() {
+    [...root.children].forEach((el, i) => {
+      const on = i === current && !audio.paused;
+      el.setAttribute('aria-pressed', on ? 'true' : 'false');
+      const icon = el.querySelector('.play svg');
+      if (icon) icon.innerHTML = '<path d="' + (on ? PAUSE : PLAY) + '"/>';
+    });
+    if (current < 0) { dock.classList.remove('on'); return; }
+    dock.classList.add('on');
+    dockT.textContent = TRACKS[current].t;
+    dockIcon.innerHTML = '<path d="' + (audio.paused ? PLAY : PAUSE) + '"/>';
+    dockBtn.setAttribute('aria-label', audio.paused ? 'Play' : 'Pause');
+  }
+
+  function select(i) {
+    if (i === current) {
+      audio.paused ? audio.play().catch(() => {}) : audio.pause();
+      paint();
+      return;
+    }
+    current = i;
+    audio.src = TRACKS[i].f;
+    audio.currentTime = 0;
+    audio.play().catch(() => say('Tap play once more to start audio.'));
+    paint();
+    say('Playing ' + TRACKS[i].t + ', 45-second snippet.');
+  }
+
+  TRACKS.forEach((tr, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'track';
+    b.setAttribute('aria-pressed', 'false');
+    b.setAttribute('aria-label', 'Play a 45 second snippet of ' + tr.t);
+    b.innerHTML =
+      '<span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY + '"/></svg></span>' +
+      '<span><span class="t-title"></span><span class="t-meta"></span></span>' +
+      '<span class="tag ' + tr.w + '"></span>';
+    b.querySelector('.t-title').textContent = tr.t;
+    b.querySelector('.t-meta').textContent = tr.g;
+    b.querySelector('.tag').textContent = tr.d;
+    b.addEventListener('click', () => select(i));
+    root.appendChild(b);
+
+    const url = tr.w === 'alt' ? '' : (LINKS[tr.t] || '').trim();
+    if (url) {
+      const a = document.createElement('a');
+      a.className = 'everywhere';
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = 'Listen everywhere \u2192';
+      a.setAttribute('aria-label', 'Listen to ' + tr.t + ' on all platforms');
+      root.appendChild(a);
+    }
+  });
+
+  dockBtn.addEventListener('click', () => select(current));
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) dockP.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  });
+  audio.addEventListener('ended', () => {
+    dockP.style.width = '0%';
+    if (current < TRACKS.length - 1) select(current + 1); else { current = -1; paint(); }
+  });
+  audio.addEventListener('play', paint);
+  audio.addEventListener('pause', paint);
+  audio.addEventListener('error', () => say('That snippet could not load.'));
+  paint();
+})();
+</script>
+</body>
+</html>
+
+</body></html>
