@@ -112,6 +112,32 @@
       color: var(--gold); font-size: 13.5px; font-weight: 700; text-decoration: none;
     }
     .everywhere:hover { color: var(--brand-hi); }
+    .stream {
+      display: inline-flex; align-items: center; gap: 7px; min-height: 40px;
+      margin: -2px 0 14px 67px; padding: 8px 15px; border: 1px solid var(--gold);
+      border-radius: 999px; color: var(--gold); font-size: 13.5px; font-weight: 700; text-decoration: none;
+    }
+    .stream:hover { background: var(--gold); color: var(--ink); }
+    .stream svg { width: 15px; height: 15px; fill: currentColor; }
+    dialog.sheet {
+      width: min(440px, calc(100% - 24px)); margin: auto auto 12px; padding: 0;
+      border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); color: var(--paper);
+    }
+    @media (min-width: 600px) { dialog.sheet { margin: auto; } }
+    dialog.sheet::backdrop { background: rgba(0,0,0,.6); }
+    .sheet-in { padding: 22px 20px 18px; }
+    .sheet-k { color: var(--brand-hi); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .sheet-t { margin: 4px 0 14px; font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.2; }
+    .plats { display: grid; gap: 8px; }
+    .plat {
+      display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 12px 16px;
+      border: 1px solid var(--line); border-radius: var(--r); background: var(--ink); color: var(--paper);
+      font-weight: 600; text-decoration: none;
+    }
+    .plat:hover { border-color: var(--gold); color: var(--gold); }
+    .sheet-note { margin-top: 12px; color: var(--muted); font-size: 12.5px; }
+    .sheet-x { width: 100%; min-height: 48px; margin-top: 12px; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; }
+    .sheet-x:hover { border-color: var(--brand); }
     .panel { padding: 24px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); }
     .panel h3 { margin-bottom: 10px; font-family: var(--serif); font-size: 22px; font-weight: 500; }
     .panel p { color: var(--muted); }
@@ -269,6 +295,16 @@
     </div>
   </div>
 
+  <dialog class="sheet" id="sheet" aria-labelledby="sheetT">
+    <div class="sheet-in">
+      <p class="sheet-k">Find it on</p>
+      <h3 class="sheet-t" id="sheetT">—</h3>
+      <div class="plats" id="plats"></div>
+      <p class="sheet-note">Search for <strong>MP</strong> and the song title. Releases can take a day or two to appear on every platform.</p>
+      <button class="sheet-x" type="button" id="sheetX">Close</button>
+    </div>
+  </dialog>
+
   <p class="sr" id="live" aria-live="polite"></p>
 
 <script>
@@ -277,8 +313,9 @@
   /* ----------------------------------------------------------------
      TOO LOST SMART LINKS
      As each release goes live, paste its too.fm link beside the title.
-     A track with a link shows a "Listen everywhere" button; a track
-     without one shows nothing extra. This is the only block to edit.
+     Every released song shows a "Find on streaming" button. With a
+     link here it opens that link; without one it opens a menu of
+     platform searches. This is the only block to edit.
      ---------------------------------------------------------------- */
   const LINKS = {
     "These Regrets":     "",
@@ -368,18 +405,61 @@
     b.addEventListener('click', () => select(i));
     root.appendChild(b);
 
-    const url = tr.w === 'alt' ? '' : (LINKS[tr.t] || '').trim();
-    if (url) {
+    // One streaming button per released song (not on alt mixes or unreleased titles).
+    if (tr.w === 'now') {
+      const url = (LINKS[tr.t] || '').trim();
       const a = document.createElement('a');
-      a.className = 'everywhere';
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.textContent = 'Listen everywhere \u2192';
-      a.setAttribute('aria-label', 'Listen to ' + tr.t + ' on all platforms');
+      a.className = 'stream';
+      a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm-2 13V8l6 4-6 4z"/></svg><span></span>';
+      a.querySelector('span').textContent = 'Find on streaming';
+      a.setAttribute('aria-label', 'Find ' + tr.t + ' on streaming platforms');
+      if (url) {
+        // A too.fm smart link goes straight to every platform at once.
+        a.href = url; a.target = '_blank'; a.rel = 'noopener';
+      } else {
+        a.href = '#';
+        a.setAttribute('aria-haspopup', 'dialog');
+        a.addEventListener('click', (e) => { e.preventDefault(); openSheet(tr.t, a); });
+      }
       root.appendChild(a);
     }
   });
+
+  /* Platform search links, used until a song's too.fm link is filled in. */
+  const PLATFORMS = [
+    ['Spotify',       (q) => 'https://open.spotify.com/search/' + encodeURIComponent(q)],
+    ['Apple Music',   (q) => 'https://music.apple.com/us/search?term=' + encodeURIComponent(q)],
+    ['YouTube Music', (q) => 'https://music.youtube.com/search?q=' + encodeURIComponent(q)],
+    ['Amazon Music',  (q) => 'https://music.amazon.com/search/' + encodeURIComponent(q)],
+    ['TIDAL',         (q) => 'https://listen.tidal.com/search?q=' + encodeURIComponent(q)],
+    ['Deezer',        (q) => 'https://www.deezer.com/search/' + encodeURIComponent(q)]
+  ];
+  const sheet = document.getElementById('sheet');
+  const plats = document.getElementById('plats');
+  let opener = null;
+  function openSheet(title, from) {
+    opener = from;
+    document.getElementById('sheetT').textContent = title + ' \u00b7 MP';
+    plats.textContent = '';
+    PLATFORMS.forEach(([name, make]) => {
+      const p = document.createElement('a');
+      p.className = 'plat';
+      p.href = make(title + ' MP');
+      p.target = '_blank'; p.rel = 'noopener';
+      p.innerHTML = '<span></span><span aria-hidden="true">\u2197</span>';
+      p.firstChild.textContent = name;
+      p.setAttribute('aria-label', 'Search ' + name + ' for ' + title + ' by MP (opens in a new tab)');
+      plats.appendChild(p);
+    });
+    if (typeof sheet.showModal === 'function') sheet.showModal(); else sheet.setAttribute('open', '');
+    plats.firstChild.focus();
+  }
+  function closeSheet() {
+    if (typeof sheet.close === 'function') sheet.close(); else sheet.removeAttribute('open');
+  }
+  document.getElementById('sheetX').addEventListener('click', closeSheet);
+  sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
+  sheet.addEventListener('close', () => { if (opener) opener.focus(); });
 
   dockBtn.addEventListener('click', () => select(current));
   audio.addEventListener('timeupdate', () => {
