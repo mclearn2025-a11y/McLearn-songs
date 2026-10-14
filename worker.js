@@ -185,9 +185,39 @@ async function handle(request, env) {
   return fail(404, "Not found.");
 }
 
+/* Campaign links: the same fan page, with its own headline and picture for Facebook/X previews.
+   Add a new entry here to start a fresh campaign without changing the page. */
+const CAMPAIGNS = {
+  "/new": {
+    title: "New Music from McLearn Media · 10 Songs Out Now",
+    description: "Tap to listen free: southern soul from MP, out of Brandon, Mississippi. 10 new songs, plus news and the fan wall.",
+    image: "/mp/og-new.png",
+    alt: "New music from McLearn Media: 10 new songs from MP, out now, free to listen",
+  },
+};
+
+async function campaignPage(request, env, path) {
+  const c = CAMPAIGNS[path];
+  const origin = new URL(request.url).origin;
+  const page = await env.ASSETS.fetch(new Request(origin + "/mp/", request));
+  const set = (attr) => ({ element(el) { el.setAttribute("content", attr); } });
+  return new HTMLRewriter()
+    .on("title", { element(el) { el.setInnerContent(c.title); } })
+    .on('meta[name="description"]', set(c.description))
+    .on('meta[property="og:title"]', set(c.title))
+    .on('meta[property="og:description"]', set(c.description))
+    .on('meta[property="og:url"]', set(origin + path))
+    .on('meta[property="og:image"]', set(origin + c.image))
+    .on('meta[property="og:image:alt"]', set(c.alt))
+    .on('link[rel="canonical"]', { element(el) { el.setAttribute("href", origin + path); } })
+    .transform(page);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const clean = url.pathname.replace(/\/+$/, "");
+    if (CAMPAIGNS[clean] && request.method === "GET") return campaignPage(request, env, clean);
     if (url.pathname.startsWith("/api/")) {
       try { return await handle(request, env); }
       catch (err) { console.error(err); return fail(500, "Something went wrong on our end. Try again in a minute."); }
