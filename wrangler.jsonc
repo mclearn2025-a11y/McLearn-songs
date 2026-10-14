@@ -1,0 +1,16 @@
+// Cloudflare settings for the songs site and the MP fan page.
+// The site is plain files; worker.js only answers /api/* (comments, updates, email sign-ups).
+{
+  "name": "mclearn-songs",
+  "main": "worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    "html_handling": "auto-trailing-slash"
+  },
+  // Fan wall storage. Switched on once the MP_FANS namespace ID is pasted in:
+  // "kv_namespaces": [ { "binding": "FANS", "id": "PASTE_MP_FANS_ID_HERE" } ],
+  "observability": { "enabled": true }
+}

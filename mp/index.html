@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MP · Official Fan Page</title>
+  <meta name="description" content="MP: southern soul out of Brandon, Mississippi. Hear the songs, get news first, and leave a word on the fan wall." />
+  <meta property="og:type" content="music.musician" />
+  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:title" content="MP · Official Fan Page" />
+  <meta property="og:description" content="Hear the songs, get news first, and leave a word on the fan wall." />
+  <meta name="theme-color" content="#15100C" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238A3A1A'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23FAF1E5'%3EMP%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Layout: one column, record-sleeve masthead, then Listen → News → Join → Fan wall. Dark, same palette as the songs hub. */
+    :root {
+      --ink: #15100C; --ink-2: #1E1813; --ink-3: #2A2119; --line: #43362A;
+      --paper: #FAF1E5; --muted: #C9B6A1; --brand: #C45D34; --brand-hi: #E8835A; --gold: #E4B458; --live: #7BD3A4; --bad: #F08A7A;
+      --serif: "Fraunces", Georgia, "Times New Roman", serif;
+      --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+      --r: 12px; --r-lg: 18px; --safe-b: env(safe-area-inset-bottom, 0px);
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--ink); }
+    body {
+      background: radial-gradient(1000px 600px at 15% -10%, rgba(196,93,52,.26), transparent 60%), var(--ink);
+      color: var(--paper); font-family: var(--sans); font-size: 16px; line-height: 1.55;
+      -webkit-font-smoothing: antialiased; padding-bottom: calc(100px + var(--safe-b));
+    }
+    button, input, textarea { font: inherit; color: inherit; }
+    button { border: 0; background: none; cursor: pointer; }
+    a { color: var(--gold); text-underline-offset: .18em; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+    .wrap { width: min(760px, 100%); margin: 0 auto; padding-inline: 20px; }
+
+    /* masthead */
+    .mast { padding-block: 40px 30px; display: grid; gap: 18px; }
+    .eyebrow { color: var(--brand-hi); font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .mp { font-family: var(--serif); font-weight: 700; color: var(--gold); font-size: clamp(7rem, 36vw, 13rem); line-height: .82; letter-spacing: -.04em; }
+    .lede { font-family: var(--serif); font-weight: 500; font-size: clamp(1.35rem, 5vw, 1.8rem); line-height: 1.25; max-width: 30ch; text-wrap: balance; }
+    .lede em { font-style: normal; color: var(--brand-hi); }
+    .mast-meta { color: var(--muted); font-size: 14.5px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 8px;
+      padding: 11px 20px; border-radius: 999px; font-weight: 700; text-decoration: none; border: 1px solid transparent;
+    }
+    .btn-a { background: var(--brand); color: var(--paper); }
+    .btn-a:hover { background: var(--brand-hi); color: var(--ink); }
+    .btn-b { border-color: var(--line); color: var(--paper); }
+    .btn-b:hover { border-color: var(--brand); background: var(--ink-3); }
+    .btn[disabled] { opacity: .55; cursor: default; }
+
+    h2 {
+      display: flex; align-items: center; gap: 14px; margin: 44px 0 16px;
+      color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    }
+    h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .hint { color: var(--muted); font-size: 14px; margin: -6px 0 14px; }
+
+    /* tracklist */
+    .tracks { display: grid; gap: 8px; }
+    .track {
+      display: grid; grid-template-columns: 26px 46px minmax(0,1fr) auto; gap: 12px; align-items: center;
+      padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2);
+    }
+    .track.on { border-color: var(--gold); background: var(--ink-3); }
+    .num { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; }
+    .play { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 50%; background: var(--brand); color: var(--paper); }
+    .track.on .play { background: var(--gold); color: var(--ink); }
+    .play svg { width: 18px; height: 18px; fill: currentColor; }
+    .t-main { min-width: 0; }
+    .t-title { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; }
+    .t-meta { color: var(--muted); font-size: 13px; }
+    .full { padding: 8px 12px; border: 1px solid var(--gold); border-radius: 999px; color: var(--gold); font-size: 13px; font-weight: 700; white-space: nowrap; min-height: 40px; }
+    .full:hover { background: var(--gold); color: var(--ink); }
+    @media (max-width: 440px) { .num { display: none; } .track { grid-template-columns: 46px minmax(0,1fr) auto; } .full { padding: 8px 10px; } }
+
+    /* news */
+    .news { display: grid; gap: 10px; }
+    .post { padding: 16px 18px; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: var(--r); background: var(--ink-2); }
+    .post-when { color: var(--brand-hi); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .post-t { margin-top: 3px; font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: 1.25; }
+    .post-b { margin-top: 6px; color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
+    .empty { padding: 18px; border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); font-size: 14.5px; }
+
+    /* forms */
+    .card { padding: 20px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); display: grid; gap: 12px; }
+    .card h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.2; }
+    .card p { color: var(--muted); }
+    label.f { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+    input[type=text], input[type=email], input[type=password], textarea {
+      width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid var(--line); border-radius: var(--r);
+      background: var(--ink); color: var(--paper); font-size: 16px;
+    }
+    textarea { min-height: 104px; resize: vertical; line-height: 1.5; }
+    input:focus, textarea:focus { outline: none; border-color: var(--gold); }
+    .inline { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; }
+    @media (max-width: 440px) { .inline { grid-template-columns: 1fr; } }
+    .count { justify-self: end; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .msg { font-size: 14px; min-height: 1.2em; }
+    .msg.ok { color: var(--live); } .msg.err { color: var(--bad); }
+    .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .fine { font-size: 12.5px; color: var(--muted); }
+
+    /* wall */
+    .wall { display: grid; gap: 10px; margin-top: 14px; }
+    .note { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2); }
+    .note-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+    .note-n { font-weight: 700; overflow-wrap: anywhere; }
+    .note-w { color: var(--muted); font-size: 12.5px; }
+    .note-t { margin-top: 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .x { margin-left: auto; color: var(--bad); font-size: 13px; font-weight: 700; padding: 4px 8px; border-radius: 8px; }
+    .x:hover { background: var(--ink-3); }
+
+    /* artist tools */
+    .admin { border-color: var(--gold); margin-bottom: 14px; }
+    .badge { display: inline-block; padding: 3px 10px; border: 1px solid var(--gold); border-radius: 999px; color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+    footer { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; text-align: center; }
+    footer .tag { color: var(--gold); font-family: var(--serif); font-size: 19px; }
+    .link-btn { color: var(--muted); text-decoration: underline; text-underline-offset: .18em; font-size: 13px; }
+
+    /* player dock + sheets */
+    .dock {
+      position: fixed; z-index: 50; inset: auto 0 0 0; display: none; align-items: center; gap: 14px;
+      padding: 12px 20px calc(12px + var(--safe-b)); border-top: 1px solid var(--line);
+      background: rgba(21,16,12,.96); backdrop-filter: blur(12px);
+    }
+    .dock.on { display: flex; }
+    .dock-main { min-width: 0; flex: 1; }
+    .dock-t { overflow: hidden; font-family: var(--serif); font-size: 16px; white-space: nowrap; text-overflow: ellipsis; }
+    .dock-s { color: var(--muted); font-size: 12px; }
+    .prog { height: 4px; margin-top: 7px; border-radius: 2px; background: var(--line); overflow: hidden; }
+    .prog i { display: block; height: 100%; width: 0; background: var(--gold); }
+    dialog.sheet { width: min(440px, calc(100% - 24px)); margin: auto auto 12px; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); color: var(--paper); }
+    @media (min-width: 600px) { dialog.sheet { margin: auto; } }
+    dialog.sheet::backdrop { background: rgba(0,0,0,.6); }
+    .sheet-in { padding: 22px 20px 18px; display: grid; gap: 12px; }
+    .sheet-t { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.2; }
+    .plats { display: grid; gap: 8px; }
+    .plat { display: flex; justify-content: space-between; min-height: 48px; align-items: center; padding: 11px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink); color: var(--paper); font-weight: 600; text-decoration: none; }
+    .plat:hover { border-color: var(--gold); color: var(--gold); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="mast">
+      <p class="eyebrow">Official fan page</p>
+      <h1 class="mp" aria-label="MP">MP</h1>
+      <p class="lede">Southern soul, slow jams and trap-soul out of <em>Brandon, Mississippi</em>.</p>
+      <p class="mast-meta">Ten songs out now · Written by Michael Shun McLaurin · McLearn Media</p>
+      <div class="row">
+        <a class="btn btn-a" href="#listen">Listen now</a>
+        <a class="btn btn-b" href="#join">Get updates</a>
+        <a class="btn btn-b" href="#wall">Fan wall</a>
+      </div>
+    </header>
+
+    <section aria-labelledby="listen">
+      <h2 id="listen">Listen</h2>
+      <p class="hint">Tap a song to hear 45 seconds. Tap <strong>Full song</strong> to play the whole thing on your streaming app.</p>
+      <div class="tracks" id="tracks"></div>
+    </section>
+
+    <section aria-labelledby="news">
+      <h2 id="news">News from MP</h2>
+      <div class="card admin" id="composer" hidden>
+        <p><span class="badge">Artist</span></p>
+        <h3>Post an update</h3>
+        <label class="f" for="uTitle">Headline<input type="text" id="uTitle" maxlength="80" placeholder="New song this Friday" /></label>
+        <label class="f" for="uText">Message<textarea id="uText" maxlength="600" placeholder="Tell fans what's coming, where to hear it, or what you're working on."></textarea></label>
+        <div class="row"><button class="btn btn-a" type="button" id="uPost">Post update</button><button class="btn btn-b" type="button" id="dlEmails">Download fan emails</button></div>
+        <p class="msg" id="uMsg" role="status"></p>
+      </div>
+      <div class="news" id="newsList"><p class="empty">Loading news…</p></div>
+    </section>
+
+    <section aria-labelledby="join">
+      <h2 id="join">Get updates</h2>
+      <form class="card" id="subForm" novalidate>
+        <h3>Hear new songs first.</h3>
+        <p>Leave your email and MP will let you know when new music drops. No spam, and you can leave the list any time.</p>
+        <div class="inline">
+          <label class="sr" for="subEmail">Email address</label>
+          <input type="email" id="subEmail" autocomplete="email" placeholder="you@example.com" required />
+          <button class="btn btn-a" type="submit" id="subBtn">Sign me up</button>
+        </div>
+        <div class="trap" aria-hidden="true"><label for="subWeb">Leave blank</label><input type="text" id="subWeb" tabindex="-1" autocomplete="off" /></div>
+        <p class="msg" id="subMsg" role="status"></p>
+        <p class="fine">Your email is only used to send MP news. See <a href="/legal.html#fans">Privacy</a>. <button class="link-btn" type="button" id="leaveBtn">Leave the list</button></p>
+      </form>
+    </section>
+
+    <section aria-labelledby="wall">
+      <h2 id="wall">Fan wall</h2>
+      <form class="card" id="cForm" novalidate>
+        <h3>Say something to MP.</h3>
+        <label class="f" for="cName">Your name<input type="text" id="cName" maxlength="40" autocomplete="nickname" placeholder="First name or nickname" /></label>
+        <label class="f" for="cText">Your message<textarea id="cText" maxlength="500" required placeholder="Which song hit you? Where were you when you heard it?"></textarea></label>
+        <span class="count" id="cCount">0 / 500</span>
+        <div class="trap" aria-hidden="true"><label for="cWeb">Leave blank</label><input type="text" id="cWeb" tabindex="-1" autocomplete="off" /></div>
+        <div class="row"><button class="btn btn-a" type="submit" id="cBtn">Post to the wall</button></div>
+        <p class="msg" id="cMsg" role="status"></p>
+        <p class="fine">Everyone can see what you post. Keep it kind. Links aren't allowed, and MP removes anything hateful or spammy.</p>
+      </form>
+      <div class="wall" id="wallList"><p class="empty">Loading the wall…</p></div>
+    </section>
+
+    <footer>
+      <p class="tag">One Sound. Many Stories.</p>
+      <p>McLearn Media LLC · Brandon, Mississippi</p>
+      <p><a href="/">For programmers and supervisors</a> · <a href="/legal.html">Privacy &amp; Terms</a></p>
+      <p><button class="link-btn" type="button" id="artistBtn">Artist sign-in</button></p>
+    </footer>
+  </div>
+
+  <div class="dock" id="dock" role="region" aria-label="Player">
+    <button class="play" id="dockBtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="dockIcon" d="M6 19h4V5H6zm8-14v14h4V5z" /></svg></button>
+    <div class="dock-main">
+      <div class="dock-t" id="dockT">—</div>
+      <div class="dock-s">45-second preview · MP</div>
+      <div class="prog"><i id="dockP"></i></div>
+    </div>
+  </div>
+
+  <dialog class="sheet" id="sheet" aria-labelledby="sheetT">
+    <div class="sheet-in">
+      <p class="eyebrow">Full song</p>
+      <h3 class="sheet-t" id="sheetT">—</h3>
+      <div class="plats" id="plats"></div>
+      <button class="btn btn-b" type="button" id="sheetX">Close</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="authSheet" aria-labelledby="authT">
+    <form class="sheet-in" id="authForm">
+      <p class="eyebrow">For MP only</p>
+      <h3 class="sheet-t" id="authT">Artist sign-in</h3>
+      <label class="f" for="authKey">Artist password<input type="password" id="authKey" autocomplete="current-password" /></label>
+      <p class="msg" id="authMsg" role="status"></p>
+      <div class="row"><button class="btn btn-a" type="submit">Sign in</button><button class="btn btn-b" type="button" id="authX">Cancel</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="sheet" id="leaveSheet" aria-labelledby="leaveT">
+    <form class="sheet-in" id="leaveForm">
+      <h3 class="sheet-t" id="leaveT">Leave the email list</h3>
+      <label class="f" for="leaveEmail">Email address<input type="email" id="leaveEmail" autocomplete="email" /></label>
+      <p class="msg" id="leaveMsg" role="status"></p>
+      <div class="row"><button class="btn btn-a" type="submit">Remove me</button><button class="btn btn-b" type="button" id="leaveX">Close</button></div>
+    </form>
+  </dialog>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+
+  /* ---- Songs. Add new releases at the top of this list. -------------------- */
+  const SONGS = [
+    { t: "These Regrets",     g: "Southern Soul",  f: "/audio/these-regrets.mp3" },
+    { t: "Who Got Your Back", g: "Soul / Rap",     f: "/audio/who-got-your-back.mp3" },
+    { t: "Can I?",            g: "Southern Soul",  f: "/audio/can-i.mp3" },
+    { t: "Rain and You",      g: "Slow Ballad",    f: "/audio/rain-and-you.mp3" },
+    { t: "TEA",               g: "Slow Jam",       f: "/audio/tea.mp3" },
+    { t: "I See You",         g: "Southern Soul",  f: "/audio/i-see-you.mp3" },
+    { t: "Who Am I",          g: "Slow Ballad",    f: "/audio/who-am-i.mp3" },
+    { t: "Hey You",           g: "Rhythm & Soul",  f: "/audio/hey-you.mp3" },
+    { t: "I Can't Tell",      g: "Southern Soul",  f: "/audio/i-cant-tell.mp3" },
+    { t: "Thank You",         g: "Trap-Soul Duet", f: "/audio/thank-you-remix.mp3" }
+  ];
+  const PLATFORMS = [
+    ["Spotify",       (q) => "https://open.spotify.com/search/" + encodeURIComponent(q)],
+    ["Apple Music",   (q) => "https://music.apple.com/us/search?term=" + encodeURIComponent(q)],
+    ["YouTube Music", (q) => "https://music.youtube.com/search?q=" + encodeURIComponent(q)],
+    ["Amazon Music",  (q) => "https://music.amazon.com/search/" + encodeURIComponent(q)],
+    ["TIDAL",         (q) => "https://listen.tidal.com/search?q=" + encodeURIComponent(q)]
+  ];
+
+  /* ---- Player --------------------------------------------------------------- */
+  const PLAY = "M8 5v14l11-7z", PAUSE = "M6 19h4V5H6zm8-14v14h4V5z";
+  const audio = new Audio(); audio.preload = "none";
+  let current = -1;
+  const list = $("tracks");
+  SONGS.forEach((s, i) => {
+    const row = document.createElement("div");
+    row.className = "track";
+    row.innerHTML = '<span class="num"></span><button class="play" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY + '"/></svg></button><span class="t-main"><span class="t-title"></span><br><span class="t-meta"></span></span><button class="full" type="button">Full song</button>';
+    row.querySelector(".num").textContent = String(i + 1).padStart(2, "0");
+    row.querySelector(".t-title").textContent = s.t;
+    row.querySelector(".t-meta").textContent = s.g;
+    const pb = row.querySelector(".play");
+    pb.setAttribute("aria-label", "Play a preview of " + s.t);
+    pb.addEventListener("click", () => select(i));
+    row.querySelector(".full").addEventListener("click", (e) => openSheet(s.t, e.currentTarget));
+    row.querySelector(".full").setAttribute("aria-label", "Play the full song " + s.t + " on a streaming app");
+    list.appendChild(row);
+  });
+  function paint() {
+    [...list.children].forEach((row, i) => {
+      const on = i === current && !audio.paused;
+      row.classList.toggle("on", i === current);
+      row.querySelector(".play path").setAttribute("d", on ? PAUSE : PLAY);
+    });
+    $("dock").classList.toggle("on", current >= 0);
+    if (current >= 0) {
+      $("dockT").textContent = SONGS[current].t;
+      $("dockIcon").setAttribute("d", audio.paused ? PLAY : PAUSE);
+      $("dockBtn").setAttribute("aria-label", audio.paused ? "Play" : "Pause");
+    }
+  }
+  function select(i) {
+    if (i === current) { audio.paused ? audio.play().catch(() => {}) : audio.pause(); return paint(); }
+    current = i; audio.src = SONGS[i].f; audio.play().catch(() => {}); paint();
+  }
+  $("dockBtn").addEventListener("click", () => select(current));
+  audio.addEventListener("timeupdate", () => { if (audio.duration) $("dockP").style.width = (audio.currentTime / audio.duration * 100) + "%"; });
+  audio.addEventListener("ended", () => { if (current < SONGS.length - 1) select(current + 1); else { current = -1; paint(); } });
+  audio.addEventListener("play", paint); audio.addEventListener("pause", paint);
+
+  /* ---- Dialog helpers ------------------------------------------------------- */
+  const open = (d) => (typeof d.showModal === "function" ? d.showModal() : d.setAttribute("open", ""));
+  const shut = (d) => (typeof d.close === "function" ? d.close() : d.removeAttribute("open"));
+  let opener = null;
+  function openSheet(title, from) {
+    opener = from;
+    $("sheetT").textContent = title + " · MP";
+    const p = $("plats"); p.textContent = "";
+    PLATFORMS.forEach(([name, make]) => {
+      const a = document.createElement("a");
+      a.className = "plat"; a.href = make(title + " MP"); a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = "<span></span><span aria-hidden=\"true\">↗</span>"; a.firstChild.textContent = name;
+      p.appendChild(a);
+    });
+    open($("sheet"));
+  }
+  $("sheetX").addEventListener("click", () => shut($("sheet")));
+  $("sheet").addEventListener("close", () => opener && opener.focus());
+  document.querySelectorAll("dialog.sheet").forEach((d) => d.addEventListener("click", (e) => { if (e.target === d) shut(d); }));
+
+  /* ---- Talking to the server ------------------------------------------------ */
+  let adminKey = "";
+  try { adminKey = sessionStorage.getItem("mpAdmin") || ""; } catch {}
+  async function api(path, opts = {}) {
+    const headers = { "content-type": "application/json" };
+    if (opts.admin) headers["x-admin-key"] = adminKey;
+    let res;
+    try { res = await fetch(path, { method: opts.method || "GET", headers, body: opts.body ? JSON.stringify(opts.body) : undefined }); }
+    catch { throw new Error("Couldn't reach the server. Check your connection and try again."); }
+    if (opts.raw && res.ok) return res;
+    let data = {}; try { data = await res.json(); } catch {}
+    if (!res.ok) { const e = new Error(data.error || "Something went wrong. Try again."); e.status = res.status; throw e; }
+    return data;
+  }
+  const say = (el, text, ok) => { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); };
+
+  function when(ts) {
+    const s = Math.round((Date.now() - ts) / 1000);
+    if (s < 60) return "just now";
+    const m = Math.round(s / 60); if (m < 60) return m + (m === 1 ? " minute ago" : " minutes ago");
+    const h = Math.round(m / 60); if (h < 24) return h + (h === 1 ? " hour ago" : " hours ago");
+    const d = Math.round(h / 24); if (d < 7) return d + (d === 1 ? " day ago" : " days ago");
+    return new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  }
+
+  let comments = [], updates = [], live = false;
+  function delBtn(kind, id) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "x"; b.textContent = "Remove";
+    b.addEventListener("click", async () => {
+      if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Tap again to remove"; return; }
+      b.disabled = true;
+      try {
+        await api("/api/admin/" + kind + "/" + id, { method: "DELETE", admin: true });
+        if (kind === "comments") comments = comments.filter((c) => c.id !== id); else updates = updates.filter((u) => u.id !== id);
+        render();
+      } catch (e) { b.textContent = e.message; b.disabled = false; }
+    });
+    return b;
+  }
+  function render() {
+    const n = $("newsList"); n.textContent = "";
+    if (!updates.length) {
+      const p = document.createElement("p"); p.className = "empty";
+      p.textContent = live ? "No news yet. Sign up below and you'll hear it first." : "News will show here soon.";
+      n.appendChild(p);
+    }
+    updates.forEach((u) => {
+      const el = document.createElement("article"); el.className = "post";
+      el.innerHTML = '<p class="post-when"></p><h3 class="post-t"></h3><p class="post-b"></p>';
+      el.querySelector(".post-when").textContent = when(u.ts);
+      el.querySelector(".post-t").textContent = u.title || "From MP";
+      el.querySelector(".post-b").textContent = u.text || "";
+      if (adminKey) el.appendChild(delBtn("updates", u.id));
+      n.appendChild(el);
+    });
+    const w = $("wallList"); w.textContent = "";
+    if (!comments.length) {
+      const p = document.createElement("p"); p.className = "empty";
+      p.textContent = live ? "Nobody has posted yet. Be the first to say something." : "The fan wall opens soon.";
+      w.appendChild(p);
+    }
+    comments.forEach((c) => {
+      const el = document.createElement("article"); el.className = "note";
+      el.innerHTML = '<div class="note-h"><span class="note-n"></span><span class="note-w"></span></div><p class="note-t"></p>';
+      el.querySelector(".note-n").textContent = c.name || "A fan";
+      el.querySelector(".note-w").textContent = when(c.ts);
+      el.querySelector(".note-t").textContent = c.text;
+      if (adminKey) el.querySelector(".note-h").appendChild(delBtn("comments", c.id));
+      w.appendChild(el);
+    });
+  }
+  async function load() {
+    try { const d = await api("/api/wall"); comments = d.comments || []; updates = d.updates || []; live = true; }
+    catch { live = false; ["cBtn", "subBtn"].forEach((id) => { $(id).disabled = true; }); }
+    render();
+  }
+
+  /* ---- Fan wall ------------------------------------------------------------- */
+  try { $("cName").value = localStorage.getItem("mpName") || ""; } catch {}
+  $("cText").addEventListener("input", () => { $("cCount").textContent = $("cText").value.length + " / 500"; });
+  $("cForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const text = $("cText").value.trim(), name = $("cName").value.trim();
+    if (text.length < 2) return say($("cMsg"), "Write a little more before posting.", false);
+    $("cBtn").disabled = true;
+    try {
+      const d = await api("/api/comments", { method: "POST", body: { name, text, website: $("cWeb").value } });
+      if (d.comment) comments.unshift(d.comment);
+      try { localStorage.setItem("mpName", name); } catch {}
+      $("cText").value = ""; $("cCount").textContent = "0 / 500";
+      say($("cMsg"), "Posted. Thanks for the love.", true); render();
+    } catch (err) { say($("cMsg"), err.message, false); }
+    finally { $("cBtn").disabled = false; }
+  });
+
+  /* ---- Email list ----------------------------------------------------------- */
+  $("subForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = $("subEmail").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return say($("subMsg"), "That email address doesn't look right. Check it and try again.", false);
+    $("subBtn").disabled = true;
+    try { await api("/api/subscribe", { method: "POST", body: { email, website: $("subWeb").value } }); $("subEmail").value = ""; say($("subMsg"), "You're on the list. New music comes to you first.", true); }
+    catch (err) { say($("subMsg"), err.message, false); }
+    finally { $("subBtn").disabled = false; }
+  });
+  $("leaveBtn").addEventListener("click", () => { $("leaveMsg").textContent = ""; open($("leaveSheet")); $("leaveEmail").focus(); });
+  $("leaveX").addEventListener("click", () => shut($("leaveSheet")));
+  $("leaveForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try { await api("/api/unsubscribe", { method: "POST", body: { email: $("leaveEmail").value.trim() } }); say($("leaveMsg"), "Done. That address is off the list.", true); $("leaveEmail").value = ""; }
+    catch (err) { say($("leaveMsg"), err.message, false); }
+  });
+
+  /* ---- Artist tools --------------------------------------------------------- */
+  function showAdmin() {
+    $("composer").hidden = !adminKey;
+    $("artistBtn").textContent = adminKey ? "Sign out of artist tools" : "Artist sign-in";
+    render();
+  }
+  $("artistBtn").addEventListener("click", () => {
+    if (adminKey) { adminKey = ""; try { sessionStorage.removeItem("mpAdmin"); } catch {} return showAdmin(); }
+    $("authMsg").textContent = ""; $("authKey").value = ""; open($("authSheet")); $("authKey").focus();
+  });
+  $("authX").addEventListener("click", () => shut($("authSheet")));
+  $("authForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    adminKey = $("authKey").value;
+    try {
+      await api("/api/admin/check", { admin: true });
+      try { sessionStorage.setItem("mpAdmin", adminKey); } catch {}
+      shut($("authSheet")); showAdmin(); $("news").scrollIntoView({ behavior: "smooth" });
+    } catch (err) { adminKey = ""; say($("authMsg"), err.message, false); }
+  });
+  $("uPost").addEventListener("click", async () => {
+    const title = $("uTitle").value.trim(), text = $("uText").value.trim();
+    if (!title && !text) return say($("uMsg"), "Write a headline or a message first.", false);
+    $("uPost").disabled = true;
+    try {
+      const d = await api("/api/admin/updates", { method: "POST", admin: true, body: { title, text } });
+      updates.unshift(d.update); $("uTitle").value = ""; $("uText").value = "";
+      say($("uMsg"), "Posted. Fans can see it now.", true); render();
+    } catch (err) { say($("uMsg"), err.message, false); }
+    finally { $("uPost").disabled = false; }
+  });
+  $("dlEmails").addEventListener("click", async () => {
+    try {
+      const res = await api("/api/admin/subscribers", { admin: true, raw: true });
+      const url = URL.createObjectURL(await res.blob());
+      const a = document.createElement("a"); a.href = url; a.download = "mp-fan-emails.csv"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      say($("uMsg"), "Fan email list downloaded.", true);
+    } catch (err) { say($("uMsg"), err.message, false); }
+  });
+
+  if (adminKey) api("/api/admin/check", { admin: true }).catch(() => { adminKey = ""; try { sessionStorage.removeItem("mpAdmin"); } catch {} showAdmin(); });
+  showAdmin();
+  load();
+})();
+</script>
+</body>
+</html>
