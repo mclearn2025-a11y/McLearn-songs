@@ -141,6 +141,12 @@
       background: rgba(21,16,12,.96); backdrop-filter: blur(12px);
     }
     .dock.on { display: flex; }
+    .dock { gap: 10px; }
+    .skipbtn { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); color: var(--paper); flex: none; }
+    .skipbtn:hover { border-color: var(--gold); color: var(--gold); }
+    .skipbtn svg { width: 20px; height: 20px; fill: currentColor; }
+    .dock-main { margin-left: 4px; }
+    .playall { margin: -4px 0 14px; }
     .dock-main { min-width: 0; flex: 1; }
     .dock-t { overflow: hidden; font-family: var(--serif); font-size: 16px; white-space: nowrap; text-overflow: ellipsis; }
     .dock-s { color: var(--muted); font-size: 12px; }
@@ -174,6 +180,7 @@
     <section aria-labelledby="listen">
       <h2 id="listen">Listen</h2>
       <p class="hint">Tap a song to hear 45 seconds. Tap <strong>Full song</strong> to play the whole thing on your streaming app.</p>
+      <button class="btn btn-a playall" type="button" id="playAll">▶ Play all 10 songs</button>
       <div class="tracks" id="tracks"></div>
     </section>
 
@@ -230,7 +237,9 @@
   </div>
 
   <div class="dock" id="dock" role="region" aria-label="Player">
+    <button class="skipbtn" id="backBtn" type="button" aria-label="Previous song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" /></svg></button>
     <button class="play" id="dockBtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="dockIcon" d="M6 19h4V5H6zm8-14v14h4V5z" /></svg></button>
+    <button class="skipbtn" id="skipBtn" type="button" aria-label="Skip to next song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" /></svg></button>
     <div class="dock-main">
       <div class="dock-t" id="dockT">—</div>
       <div class="dock-s">45-second preview · MP</div>
@@ -329,6 +338,17 @@
     current = i; audio.src = SONGS[i].f; audio.play().catch(() => {}); paint();
   }
   $("dockBtn").addEventListener("click", () => select(current));
+  const step = (d) => { if (current < 0) return select(0); select((current + d + SONGS.length) % SONGS.length); };
+  $("skipBtn").addEventListener("click", () => step(1));
+  $("backBtn").addEventListener("click", () => { if (audio.currentTime > 3) { audio.currentTime = 0; audio.play().catch(() => {}); } else step(-1); });
+  $("playAll").addEventListener("click", () => select(0));
+  if ("mediaSession" in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler("nexttrack", () => step(1));
+      navigator.mediaSession.setActionHandler("previoustrack", () => step(-1));
+      audio.addEventListener("play", () => { navigator.mediaSession.metadata = new MediaMetadata({ title: SONGS[current].t, artist: "MP", album: "McLearn Media" }); });
+    } catch {}
+  }
   audio.addEventListener("timeupdate", () => { if (audio.duration) $("dockP").style.width = (audio.currentTime / audio.duration * 100) + "%"; });
   audio.addEventListener("ended", () => { if (current < SONGS.length - 1) select(current + 1); else { current = -1; paint(); } });
   audio.addEventListener("play", paint); audio.addEventListener("pause", paint);
