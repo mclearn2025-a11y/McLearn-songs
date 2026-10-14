@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MP Video Kit</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#15100C" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238A3A1A'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23FAF1E5'%3EMP%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Layout: pick a shape (tabs), then one row per song with Download and Copy post text. Same palette as the fan page. */
+    :root {
+      --ink: #15100C; --ink-2: #1E1813; --ink-3: #2A2119; --line: #43362A;
+      --paper: #FAF1E5; --muted: #C9B6A1; --brand: #C45D34; --brand-hi: #E8835A; --gold: #E4B458; --live: #7BD3A4;
+      --serif: "Fraunces", Georgia, serif; --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+      --r: 12px; color-scheme: dark;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--ink); }
+    body { background: var(--ink); color: var(--paper); font-family: var(--sans); line-height: 1.5; padding-bottom: 60px; }
+    button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+    a { color: var(--gold); }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+    .wrap { width: min(760px, 100%); margin: 0 auto; padding-inline: 20px; }
+    header { padding-block: 36px 18px; display: grid; gap: 8px; }
+    .eyebrow { color: var(--brand-hi); font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    h1 { font-family: var(--serif); font-size: clamp(2.2rem, 9vw, 3.2rem); line-height: 1.05; }
+    h1 span { color: var(--gold); }
+    .sub { color: var(--muted); max-width: 56ch; }
+    .tabs { display: flex; gap: 8px; overflow-x: auto; padding-block: 14px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--ink); z-index: 2; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: none; min-height: 44px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; font-size: 14px; }
+    .tab[aria-selected="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+    .where { padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: var(--r); background: var(--ink-2); color: var(--muted); font-size: 14.5px; margin-bottom: 14px; }
+    .where strong { color: var(--paper); }
+    .list { display: grid; gap: 8px; }
+    .item { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 8px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2); }
+    .item.big { border-color: var(--brand); background: var(--ink-3); }
+    .name { font-family: var(--serif); font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+    .meta { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 13.5px; text-decoration: none; white-space: nowrap; }
+    .dl { background: var(--brand); color: var(--paper); }
+    .dl:hover { background: var(--brand-hi); color: var(--ink); }
+    .cp { border: 1px solid var(--line); }
+    .cp:hover { border-color: var(--gold); }
+    .cp.done { border-color: var(--live); color: var(--live); }
+    @media (max-width: 460px) { .item { grid-template-columns: 1fr 1fr; } .item > div:first-child { grid-column: 1 / -1; } }
+    footer { margin-top: 36px; color: var(--muted); font-size: 13px; text-align: center; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">For posting · McLearn Media</p>
+      <h1><span>MP</span> Video Kit</h1>
+      <p class="sub">Every MP video in every shape. Pick the shape for the app you're posting to, tap <strong>Download</strong>, then tap <strong>Copy post</strong> and paste the text with it.</p>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Video shape" id="tabs"></div>
+    <section id="panel" role="tabpanel"></section>
+
+    <footer>
+      <p>McLearn Media LLC · Brandon, Mississippi · <a href="/mp/">MP fan page</a></p>
+      <p>These videos are for posting MP's music. All rights reserved.</p>
+    </footer>
+  </div>
+
+<script>
+(() => {
+  "use strict";
+  const FAN = "https://mclearn-songs.mclearn2025.workers.dev/mp";
+  const SONGS = [
+    ["These Regrets", "these-regrets", "Southern Soul"], ["Who Got Your Back", "who-got-your-back", "Soul / Rap"],
+    ["Can I?", "can-i", "Southern Soul"], ["Rain and You", "rain-and-you", "Slow Ballad"], ["TEA", "tea", "Slow Jam"],
+    ["I See You", "i-see-you", "Southern Soul"], ["Who Am I", "who-am-i", "Slow Ballad"], ["Hey You", "hey-you", "Rhythm & Soul"],
+    ["I Can't Tell", "i-cant-tell", "Southern Soul"], ["Thank You", "thank-you", "Trap-Soul Duet"]
+  ];
+  const SHAPES = [
+    { id: "tiktok", label: "Tall 9:16", dir: "tiktok", suffix: "tiktok", all: "mp-all-songs-tiktok.mp4",
+      where: "<strong>TikTok, Instagram Reels, YouTube Shorts, Facebook Reels, Stories.</strong> Links don't work in TikTok or Instagram captions, so the post text says “link in bio.”",
+      post: (t) => `"${t}" by MP 🎶 Full song on every streaming app. Link in bio for the fan page.\n#MP #SouthernSoul #NewMusic #SoulMusic`,
+      allPost: () => `10 songs from MP, back to back 🎶 Southern soul out of Mississippi. Full songs on every streaming app. Link in bio.\n#MP #SouthernSoul #NewMusic` },
+    { id: "feed", label: "Feed 4:5", dir: "feed", suffix: "feed-4x5", all: "mp-all-songs-feed-4x5.mp4",
+      where: "<strong>Facebook and Instagram feed posts.</strong> On Facebook the link in the post works. On Instagram, add “link in bio” instead.",
+      post: (t) => `New from MP: "${t}" 🎶 Southern soul out of Brandon, Mississippi.\nHear the full song on every streaming app, and join the fan page for new music first:\n${FAN}\n#MP #SouthernSoul #NewMusic #McLearnMedia`,
+      allPost: () => `All 10 songs from MP in one video 🎶 Southern soul out of Brandon, Mississippi.\nFull songs on every streaming app. Fan page and new music first:\n${FAN}\n#MP #SouthernSoul #NewMusic #McLearnMedia` },
+    { id: "wide", label: "Wide 16:9", dir: "wide", suffix: "wide-16x9", all: "mp-all-songs-wide-16x9.mp4",
+      where: "<strong>X (Twitter), YouTube, Facebook, LinkedIn.</strong> The all-songs video is too long for free X accounts (2:20 limit), so post single songs there.",
+      post: (t) => `"${t}" by MP is out now 🎶 Southern soul from Mississippi. Full song + fan page 👇\n${FAN}\n#SouthernSoul #NewMusic`,
+      allPost: () => `MP: 10 songs, one video 🎶 Southern soul from Brandon, Mississippi.\nFull songs on every streaming app. Fan page, news and new music first:\n${FAN}\nWritten by Michael Shun McLaurin · © McLearn Media LLC` }
+  ];
+
+  const tabs = document.getElementById("tabs"), panel = document.getElementById("panel");
+  let current = "tiktok";
+  try { current = localStorage.getItem("mpKitTab") || current; } catch {}
+
+  function copyBtn(text) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn cp"; b.textContent = "Copy post";
+    b.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(text); }
+      catch {
+        const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch {} ta.remove();
+      }
+      b.textContent = "Copied"; b.classList.add("done");
+      setTimeout(() => { b.textContent = "Copy post"; b.classList.remove("done"); }, 1800);
+    });
+    return b;
+  }
+  function row(name, meta, href, text, big) {
+    const el = document.createElement("div"); el.className = "item" + (big ? " big" : "");
+    el.innerHTML = '<div><div class="name"></div><div class="meta"></div></div><a class="btn dl" download>Download</a>';
+    el.querySelector(".name").textContent = name; el.querySelector(".meta").textContent = meta;
+    const a = el.querySelector("a"); a.href = href; a.setAttribute("aria-label", "Download " + name);
+    el.appendChild(copyBtn(text));
+    return el;
+  }
+  function render() {
+    tabs.textContent = "";
+    SHAPES.forEach((s) => {
+      const t = document.createElement("button");
+      t.type = "button"; t.className = "tab"; t.role = "tab"; t.textContent = s.label;
+      t.setAttribute("aria-selected", s.id === current ? "true" : "false");
+      t.addEventListener("click", () => { current = s.id; try { localStorage.setItem("mpKitTab", current); } catch {} render(); });
+      tabs.appendChild(t);
+    });
+    const s = SHAPES.find((x) => x.id === current) || SHAPES[0];
+    panel.textContent = "";
+    const w = document.createElement("p"); w.className = "where"; w.innerHTML = s.where; panel.appendChild(w);
+    const list = document.createElement("div"); list.className = "list";
+    list.appendChild(row("All 10 songs", "7:30 · opening tracklist and closing card", `all/${s.all}`, s.allPost(), true));
+    SONGS.forEach(([t, slug, g]) => list.appendChild(row(t, g + " · 0:45", `${s.dir}/mp-${slug}-${s.suffix}.mp4`, s.post(t))));
+    panel.appendChild(list);
+  }
+  render();
+})();
+</script>
+</body>
+</html>

@@ -12,3 +12,10 @@
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/videos/*
+  X-Robots-Tag: noindex
+
+/videos/*.mp4
+  Cache-Control: public, max-age=86400
+  Content-Disposition: attachment
