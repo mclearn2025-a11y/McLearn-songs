@@ -252,6 +252,7 @@
       <p class="eyebrow">Full song</p>
       <h3 class="sheet-t" id="sheetT">—</h3>
       <div class="plats" id="plats"></div>
+      <p class="fine">On TikTok, search MP and the song title to hear it and use it in your own videos. New releases can take a few days to reach every app.</p>
       <button class="btn btn-b" type="button" id="sheetX">Close</button>
     </div>
   </dialog>
@@ -298,7 +299,10 @@
     ["Apple Music",   (q) => "https://music.apple.com/us/search?term=" + encodeURIComponent(q)],
     ["YouTube Music", (q) => "https://music.youtube.com/search?q=" + encodeURIComponent(q)],
     ["Amazon Music",  (q) => "https://music.amazon.com/search/" + encodeURIComponent(q)],
-    ["TIDAL",         (q) => "https://listen.tidal.com/search?q=" + encodeURIComponent(q)]
+    ["TIDAL",         (q) => "https://listen.tidal.com/search?q=" + encodeURIComponent(q)],
+    ["Deezer",        (q) => "https://www.deezer.com/search/" + encodeURIComponent(q)],
+    ["Pandora",       (q) => "https://www.pandora.com/search/" + encodeURIComponent(q) + "/all"],
+    ["TikTok",        (q) => "https://www.tiktok.com/search?q=" + encodeURIComponent(q)]
   ];
 
   /* ---- Player --------------------------------------------------------------- */
