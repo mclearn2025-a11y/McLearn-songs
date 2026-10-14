@@ -23,7 +23,7 @@ on every push to `main`, using `wrangler.jsonc`.
 
 ### Fan page storage (one time)
 1. Cloudflare → **Storage & Databases → KV → Create** → name it `MP_FANS`.
-2. Paste its ID into `wrangler.jsonc` under `kv_namespaces` (binding `FANS`).
+2. No ID needed: Wrangler creates and links the `FANS` storage on deploy.
 3. Cloudflare → **Workers & Pages → mclearn-songs → Settings → Variables and Secrets**
    → add a **Secret** named `ADMIN_KEY` (the artist password, 12+ characters).
 
