@@ -14,7 +14,8 @@ Every video: song title, moving sound wave, progress bar, loudness set to -14 LU
 Cloudflare will not publish a file over 25 MB, so the 7:30 all-songs videos are
 encoded at about 285 kbps to land near 23 MB.
 
-**Next step: lyrics.** When the lyrics arrive (copy them from each song in Suno),
+**Next step: lyrics.** The lyrics go in the Google Doc "MP Lyrics — October 2026 Releases"
+in the "Mclearn music" Drive folder (one section per song, copied from Suno). When it is filled in,
 add them on screen, timed to the clip, in all three shapes, and rebuild `/videos/`.
 
 Fonts: Fraunces and Hanken Grotesk, SIL Open Font License (see `fonts/`).
