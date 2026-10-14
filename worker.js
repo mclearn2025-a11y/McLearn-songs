@@ -213,11 +213,21 @@ async function campaignPage(request, env, path) {
     .transform(page);
 }
 
+// The fan page's preview tags are written with the workers.dev address. Swap in whatever
+// address the visitor used, so a custom domain (e.g. mclearnmedia.com) works with no other change.
+const BUILT_ON = "https://mclearn-songs.mclearn2025.workers.dev";
+function localize(response, origin) {
+  if (origin === BUILT_ON) return response;
+  const fix = (attr) => ({ element(el) { const v = el.getAttribute(attr); if (v && v.startsWith(BUILT_ON)) el.setAttribute(attr, origin + v.slice(BUILT_ON.length)); } });
+  return new HTMLRewriter().on("meta[content]", fix("content")).on("link[href]", fix("href")).transform(response);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const clean = url.pathname.replace(/\/+$/, "");
-    if (CAMPAIGNS[clean] && request.method === "GET") return campaignPage(request, env, clean);
+    if (CAMPAIGNS[clean] && request.method === "GET") return localize(await campaignPage(request, env, clean), url.origin);
+    if (clean === "/mp" && request.method === "GET") return localize(await env.ASSETS.fetch(request), url.origin);
     if (url.pathname.startsWith("/api/")) {
       try { return await handle(request, env); }
       catch (err) { console.error(err); return fail(500, "Something went wrong on our end. Try again in a minute."); }
