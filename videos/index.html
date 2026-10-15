@@ -95,6 +95,10 @@
   ];
 
   const PICK_POST = "10 songs, 1 video \uD83C\uDFB6 Pause anytime and drag the bar to skip to your song. Which one is your favorite? Comment 1\u201310 \uD83D\uDC47\nFull songs on Spotify, Apple Music, YouTube Music, Amazon Music, TIDAL, Deezer, Pandora and TikTok. Search MP + the song title. Fan page: link in bio.\n#MP #SouthernSoul #NewMusic #SoulMusic #RnB #Mississippi #fyp";
+  const EXCLUSIVES = [["Who Got Your Back", "Flow Mix", "who-got-your-back-flow"], ["I See You", "Alternate Version", "i-see-you-alt"]];
+  const exPost = (t, ver, shape) => shape === "tiktok"
+    ? `"${t}" (${ver}) by MP \uD83C\uDFB6 A version you can only hear on the MP fan page. Link in bio.\n#MP #SouthernSoul #NewMusic #Exclusive`
+    : `"${t}" (${ver}) by MP \uD83C\uDFB6 A second recording you won't find on any streaming app. Hear it free on the MP fan page:\n${FAN}\n#MP #SouthernSoul #NewMusic`;
   const tabs = document.getElementById("tabs"), panel = document.getElementById("panel");
   let current = "tiktok";
   try { current = localStorage.getItem("mpKitTab") || current; } catch {}
@@ -137,6 +141,10 @@
     if (s.id === "tiktok") list.appendChild(row("All 10 songs · Pick your song", "7:30 · on-screen menu with start times, skip hint, comment prompt (best for TikTok)", "all/mp-all-songs-tiktok-pick.mp4", PICK_POST, true));
     list.appendChild(row("All 10 songs", "7:30 · opening tracklist and closing card", `all/${s.all}`, s.allPost(), true));
     SONGS.forEach(([t, slug, g]) => list.appendChild(row(t, g + " · 0:45", `${s.dir}/mp-${slug}-${s.suffix}.mp4`, s.post(t))));
+    const h = document.createElement("p"); h.className = "where"; h.style.marginTop = "18px";
+    h.innerHTML = "<strong>Fan page exclusives.</strong> Second recordings that are only on the MP fan page, not on streaming apps. Their post text sends people to the fan page.";
+    list.appendChild(h);
+    EXCLUSIVES.forEach(([t, ver, slug]) => list.appendChild(row(`${t} (${ver})`, "Fan page exclusive · 0:45", `${s.dir}/mp-${slug}-${s.suffix}.mp4`, exPost(t, ver, s.id))));
     panel.appendChild(list);
   }
   render();

@@ -15,6 +15,10 @@ LAYOUTS = {
                  wave=(1180, 330, 640, 340), bar=880, foot=920, label="Wide 16x9"),
 }
 
+PILL = "NEW MUSIC · OUT NOW"
+FOOT1 = "Full song on every streaming app"
+FOOT2 = "Search  MP {title}"
+
 def background(title, genre, c):
     W, H, L, R = c["W"], c["H"], c["L"], c["R"]
     im = Image.new("RGB", (W, H), INK)
@@ -24,7 +28,7 @@ def background(title, genre, c):
     im = Image.blend(im, glow.filter(ImageFilter.GaussianBlur(min(W, H) // 6)), 1.0)
     d = ImageDraw.Draw(im)
 
-    pf = F("Hanken-700.ttf", 30); txt = "NEW MUSIC · OUT NOW"; tw = d.textlength(txt, font=pf)
+    pf = F("Hanken-700.ttf", 30); txt = PILL; tw = d.textlength(txt, font=pf)
     y = c["top"]
     d.rounded_rectangle((L, y, L + tw + 50, y + 62), radius=31, outline=BRAND_HI, width=3)
     d.text((L + 25, y + 31), txt, font=pf, fill=BRAND_HI, anchor="lm")
@@ -43,8 +47,8 @@ def background(title, genre, c):
     bx = L if c["W"] < c["H"] * 1.2 else L
     bw = (c["wave"][0] + c["wave"][2]) - L if c["W"] > c["H"] else R - L
     d.rounded_rectangle((bx, c["bar"], bx + bw, c["bar"] + 10), radius=5, fill="#43362A")
-    d.text((L, c["foot"]), "Full song on every streaming app", font=F("Hanken-600.ttf", 38), fill=PAPER, anchor="lt")
-    d.text((L, c["foot"] + 54), f"Search  MP {title}", font=F("Hanken-500.ttf", 34), fill=MUTED, anchor="lt")
+    d.text((L, c["foot"]), FOOT1, font=F("Hanken-600.ttf", 38), fill=PAPER, anchor="lt")
+    d.text((L, c["foot"] + 54), FOOT2.format(title=title), font=F("Hanken-500.ttf", 34), fill=MUTED, anchor="lt")
     if c["W"] > c["H"]:
         d.text((bx + bw, c["foot"] + 54), "McLearn Media", font=F("Fraunces-600.ttf", 34), fill=MUTED, anchor="rt")
     return im, bx, bw

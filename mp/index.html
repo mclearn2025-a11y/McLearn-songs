@@ -87,6 +87,9 @@
     .t-meta { color: var(--muted); font-size: 13px; }
     .full { padding: 8px 12px; border: 1px solid var(--gold); border-radius: 999px; color: var(--gold); font-size: 13px; font-weight: 700; white-space: nowrap; min-height: 40px; }
     .full:hover { background: var(--gold); color: var(--ink); }
+    .excl { padding: 7px 11px; border: 1px solid var(--brand-hi); border-radius: 999px; color: var(--brand-hi); font-size: 12px; font-weight: 700; white-space: nowrap; letter-spacing: .04em; }
+    .exhead { margin: 26px 0 8px; font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--gold); }
+    .num { font-size: 12px; }
     @media (max-width: 440px) { .num { display: none; } .track { grid-template-columns: 46px minmax(0,1fr) auto; } .full { padding: 8px 10px; } }
 
     /* news */
@@ -180,8 +183,11 @@
     <section aria-labelledby="listen">
       <h2 id="listen">Listen</h2>
       <p class="hint">Tap a song to hear 45 seconds. Tap <strong>Full song</strong> to play the whole thing on your streaming app.</p>
-      <button class="btn btn-a playall" type="button" id="playAll">▶ Play all 10 songs</button>
+      <button class="btn btn-a playall" type="button" id="playAll">▶ Play all 12</button>
       <div class="tracks" id="tracks"></div>
+      <h3 class="exhead">Fan page exclusives</h3>
+      <p class="hint">Second recordings you can only hear here. Not on the streaming apps.</p>
+      <div class="tracks" id="exTracks"></div>
     </section>
 
     <section aria-labelledby="news">
@@ -292,7 +298,10 @@
     { t: "Who Am I",          g: "Slow Ballad",    f: "/audio/who-am-i.mp3" },
     { t: "Hey You",           g: "Rhythm & Soul",  f: "/audio/hey-you.mp3" },
     { t: "I Can't Tell",      g: "Southern Soul",  f: "/audio/i-cant-tell.mp3" },
-    { t: "Thank You",         g: "Trap-Soul Duet", f: "/audio/thank-you-remix.mp3" }
+    { t: "Thank You",         g: "Trap-Soul Duet", f: "/audio/thank-you-remix.mp3" },
+    // Fan page exclusives: second recordings of released songs, not on streaming apps.
+    { t: "Who Got Your Back", g: "Flow Mix",          f: "/audio/who-got-your-back-flow.mp3", x: true },
+    { t: "I See You",         g: "Alternate Version", f: "/audio/i-see-you-alt.mp3",          x: true }
   ];
   const PLATFORMS = [
     ["Spotify",       (q) => "https://open.spotify.com/search/" + encodeURIComponent(q)],
@@ -310,22 +319,29 @@
   const audio = new Audio(); audio.preload = "none";
   let current = -1;
   const list = $("tracks");
+  const exList = $("exTracks");
   SONGS.forEach((s, i) => {
     const row = document.createElement("div");
-    row.className = "track";
+    row.className = "track"; row.dataset.i = i;
     row.innerHTML = '<span class="num"></span><button class="play" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY + '"/></svg></button><span class="t-main"><span class="t-title"></span><br><span class="t-meta"></span></span><button class="full" type="button">Full song</button>';
-    row.querySelector(".num").textContent = String(i + 1).padStart(2, "0");
+    row.querySelector(".num").textContent = s.x ? "EX" : String(i + 1).padStart(2, "0");
     row.querySelector(".t-title").textContent = s.t;
     row.querySelector(".t-meta").textContent = s.g;
     const pb = row.querySelector(".play");
     pb.setAttribute("aria-label", "Play a preview of " + s.t);
     pb.addEventListener("click", () => select(i));
-    row.querySelector(".full").addEventListener("click", (e) => openSheet(s.t, e.currentTarget));
-    row.querySelector(".full").setAttribute("aria-label", "Play the full song " + s.t + " on a streaming app");
-    list.appendChild(row);
+    if (s.x) {
+      const tag = document.createElement("span"); tag.className = "excl"; tag.textContent = "Only here";
+      row.querySelector(".full").replaceWith(tag);
+      exList.appendChild(row);
+    } else {
+      row.querySelector(".full").addEventListener("click", (e) => openSheet(s.t, e.currentTarget));
+      row.querySelector(".full").setAttribute("aria-label", "Play the full song " + s.t + " on a streaming app");
+      list.appendChild(row);
+    }
   });
   function paint() {
-    [...list.children].forEach((row, i) => {
+    document.querySelectorAll(".track[data-i]").forEach((row) => { const i = Number(row.dataset.i);
       const on = i === current && !audio.paused;
       row.classList.toggle("on", i === current);
       row.querySelector(".play path").setAttribute("d", on ? PAUSE : PLAY);

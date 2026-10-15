@@ -36,6 +36,10 @@ def wrap(draw, text, font, maxw):
         else: lines.append(cur); cur = w
     lines.append(cur); return lines
 
+PILL = "NEW MUSIC · OUT NOW"
+FOOT1 = "Full song on every streaming app"
+FOOT2 = "Search  MP {title}"
+
 def background(title, genre):
     im = Image.new("RGB", (W, H), INK)
     glow = Image.new("RGB", (W, H), INK); g = ImageDraw.Draw(glow)
@@ -45,7 +49,7 @@ def background(title, genre):
     d = ImageDraw.Draw(im)
 
     # top: label pill
-    pill = F("Hanken-700.ttf", 34); txt = "NEW MUSIC · OUT NOW"
+    pill = F("Hanken-700.ttf", 34); txt = PILL
     tw = d.textlength(txt, font=pill)
     d.rounded_rectangle((L, 190, L + tw + 56, 190 + 70), radius=35, outline=BRAND_HI, width=3)
     d.text((L + 28, 225), txt, font=pill, fill=BRAND_HI, anchor="lm")
@@ -68,12 +72,12 @@ def background(title, genre):
     d.rounded_rectangle((L, BAR_Y, R, BAR_Y + 10), radius=5, fill="#43362A")
 
     # footer inside safe zone
-    d.text((L, BAR_Y + 44), "Full song on every streaming app", font=F("Hanken-600.ttf", 40), fill=PAPER, anchor="lt")
+    d.text((L, BAR_Y + 44), FOOT1, font=F("Hanken-600.ttf", 40), fill=PAPER, anchor="lt")
     sf = F("Hanken-500.ttf", 36)
     for size in (36, 32, 28):
         sf = F("Hanken-500.ttf", size)
-        if d.textlength(f"Search  MP {title}", font=sf) <= R - L: break
-    d.text((L, BAR_Y + 100), f"Search  MP {title}", font=sf, fill=MUTED, anchor="lt")
+        if d.textlength(FOOT2.format(title=title), font=sf) <= R - L: break
+    d.text((L, BAR_Y + 100), FOOT2.format(title=title), font=sf, fill=MUTED, anchor="lt")
     return im
 
 def render(title, genre, slug):
