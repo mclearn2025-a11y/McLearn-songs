@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>MP · Official Fan Page</title>
-  <meta name="description" content="MP: southern soul out of Brandon, Mississippi. Hear the songs, get news first, and leave a word on the fan wall." />
+  <meta name="description" content="MP: southern soul out of Brandon, Mississippi. Hear every song free, get two versions you won't find on any app, and get new music first." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mclearn-songs.mclearn2025.workers.dev/mp/" />
   <meta property="og:site_name" content="McLearn Media" />
@@ -15,225 +15,278 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="canonical" href="https://mclearn-songs.mclearn2025.workers.dev/mp/" />
   <meta property="og:title" content="MP · Official Fan Page" />
-  <meta property="og:description" content="Hear the songs, get news first, and leave a word on the fan wall." />
+  <meta property="og:description" content="Hear every song free, get two versions you won't find on any app, and get new music first." />
   <meta name="theme-color" content="#15100C" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238A3A1A'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23FAF1E5'%3EMP%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Layout: one column, record-sleeve masthead, then Listen → News → Join → Fan wall. Dark, same palette as the songs hub. */
+    /* Layout: one column, phone first. Who MP is → newest song with a big Play → join the list →
+       all songs (scannable rows) → fan-page-only versions explained → find MP elsewhere → news → fan wall.
+       Contrast: every text/background pair is 4.5:1 or better (button fill darkened to #A8471F for 5.2:1). */
     :root {
-      --ink: #15100C; --ink-2: #1E1813; --ink-3: #2A2119; --line: #43362A;
-      --paper: #FAF1E5; --muted: #C9B6A1; --brand: #C45D34; --brand-hi: #E8835A; --gold: #E4B458; --live: #7BD3A4; --bad: #F08A7A;
+      --ink: #15100C; --ink-2: #1E1813; --ink-3: #2A2119; --line: #4A3C2F;
+      --paper: #FAF1E5; --muted: #C9B6A1; --btn: #A8471F; --btn-hi: #C45D34; --accent: #E8835A;
+      --gold: #E4B458; --ok: #7BD3A4; --bad: #F08A7A;
       --serif: "Fraunces", Georgia, "Times New Roman", serif;
       --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
-      --r: 12px; --r-lg: 18px; --safe-b: env(safe-area-inset-bottom, 0px);
+      --r: 14px; --r-lg: 20px; --safe-b: env(safe-area-inset-bottom, 0px);
       color-scheme: dark;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { background: var(--ink); }
+    html { background: var(--ink); scroll-padding-top: 16px; }
     body {
-      background: radial-gradient(1000px 600px at 15% -10%, rgba(196,93,52,.26), transparent 60%), var(--ink);
-      color: var(--paper); font-family: var(--sans); font-size: 16px; line-height: 1.55;
-      -webkit-font-smoothing: antialiased; padding-bottom: calc(100px + var(--safe-b));
+      background: radial-gradient(900px 560px at 10% -8%, rgba(196,93,52,.24), transparent 60%), var(--ink);
+      color: var(--paper); font-family: var(--sans); font-size: 17px; line-height: 1.55;
+      -webkit-font-smoothing: antialiased; padding-bottom: calc(110px + var(--safe-b));
     }
     button, input, textarea { font: inherit; color: inherit; }
     button { border: 0; background: none; cursor: pointer; }
     a { color: var(--gold); text-underline-offset: .18em; }
-    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
-    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
     [hidden] { display: none !important; }
-    .wrap { width: min(760px, 100%); margin: 0 auto; padding-inline: 20px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    .skip { position: absolute; left: 12px; top: -60px; z-index: 99; padding: 12px 16px; border-radius: 10px; background: var(--gold); color: var(--ink); font-weight: 700; text-decoration: none; }
+    .skip:focus { top: 12px; }
+    .wrap { width: min(760px, 100%); margin: 0 auto; padding-inline: 18px; }
 
-    /* masthead */
-    .mast { padding-block: 40px 30px; display: grid; gap: 18px; }
-    .eyebrow { color: var(--brand-hi); font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
-    .mp { font-family: var(--serif); font-weight: 700; color: var(--gold); font-size: clamp(7rem, 36vw, 13rem); line-height: .82; letter-spacing: -.04em; }
-    .lede { font-family: var(--serif); font-weight: 500; font-size: clamp(1.35rem, 5vw, 1.8rem); line-height: 1.25; max-width: 30ch; text-wrap: balance; }
-    .lede em { font-style: normal; color: var(--brand-hi); }
-    .mast-meta { color: var(--muted); font-size: 14.5px; }
-    .row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .btn {
-      display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 8px;
-      padding: 11px 20px; border-radius: 999px; font-weight: 700; text-decoration: none; border: 1px solid transparent;
-    }
-    .btn-a { background: var(--brand); color: var(--paper); }
-    .btn-a:hover { background: var(--brand-hi); color: var(--ink); }
-    .btn-b { border-color: var(--line); color: var(--paper); }
-    .btn-b:hover { border-color: var(--brand); background: var(--ink-3); }
-    .btn[disabled] { opacity: .55; cursor: default; }
+    /* who MP is */
+    .mast { padding-block: 34px 8px; display: grid; gap: 14px; }
+    .eyebrow { color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .mp { font-family: var(--serif); font-weight: 700; color: var(--gold); font-size: clamp(5.5rem, 30vw, 10rem); line-height: .85; letter-spacing: -.04em; }
+    .who { font-family: var(--serif); font-weight: 500; font-size: clamp(1.3rem, 5.2vw, 1.75rem); line-height: 1.3; max-width: 32ch; text-wrap: balance; }
+    .who em { font-style: normal; color: var(--accent); }
+    .cando { display: grid; gap: 8px; list-style: none; }
+    .cando li { display: flex; gap: 10px; align-items: flex-start; color: var(--paper); }
+    .cando li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: .55em; border-radius: 50%; background: var(--gold); }
 
     h2 {
-      display: flex; align-items: center; gap: 14px; margin: 44px 0 16px;
-      color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 14px; margin: 40px 0 14px;
+      color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
     }
     h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-    .hint { color: var(--muted); font-size: 14px; margin: -6px 0 14px; }
+    .hint { color: var(--muted); font-size: 15px; margin: -4px 0 14px; }
 
-    /* tracklist */
-    .tracks { display: grid; gap: 8px; }
+    .btn {
+      display: inline-flex; min-height: 50px; align-items: center; justify-content: center; gap: 10px;
+      padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 16px; text-decoration: none; border: 2px solid transparent;
+    }
+    .btn-a { background: var(--btn); color: var(--paper); }
+    .btn-a:hover { background: var(--btn-hi); }
+    .btn-b { border-color: var(--line); color: var(--paper); }
+    .btn-b:hover { border-color: var(--gold); }
+    .btn[disabled] { opacity: .55; cursor: default; }
+    .btn svg { width: 20px; height: 20px; fill: currentColor; flex: none; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    /* newest song */
+    .feature { margin-top: 26px; padding: 20px; border: 2px solid var(--gold); border-radius: var(--r-lg); background: var(--ink-2); display: grid; gap: 12px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .badge.new { background: var(--gold); color: var(--ink); }
+    .badge.apps { border: 1.5px solid var(--ok); color: var(--ok); }
+    .badge.only { border: 1.5px solid var(--accent); color: var(--accent); }
+    .f-title { font-family: var(--serif); font-size: clamp(2rem, 9vw, 2.8rem); font-weight: 600; line-height: 1.05; }
+    .f-meta { color: var(--muted); font-size: 15px; }
+    .bigplay { min-height: 58px; font-size: 18px; padding-inline: 26px; }
+
+    /* join */
+    .card { padding: 20px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); display: grid; gap: 12px; }
+    .card.join { border: 2px solid var(--btn-hi); }
+    .card h3 { font-family: var(--serif); font-size: 24px; font-weight: 600; line-height: 1.2; }
+    .card p { color: var(--muted); }
+    .gets { display: grid; gap: 6px; list-style: none; }
+    .gets li { padding-left: 26px; position: relative; }
+    .gets li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+    label.f { display: grid; gap: 6px; font-size: 14px; font-weight: 600; color: var(--muted); }
+    input[type=text], input[type=email], input[type=password], textarea {
+      width: 100%; min-height: 52px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: var(--r);
+      background: var(--ink); color: var(--paper); font-size: 17px;
+    }
+    textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+    input:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(228,180,88,.25); }
+    .inline { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; }
+    @media (max-width: 460px) { .inline { grid-template-columns: 1fr; } }
+    .count { justify-self: end; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+    .msg { font-size: 15px; min-height: 1.2em; }
+    .msg.ok { color: var(--ok); } .msg.err { color: var(--bad); }
+    .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .fine { font-size: 14px; color: var(--muted); }
+    .link-btn { color: var(--muted); text-decoration: underline; text-underline-offset: .18em; font-size: 14px; min-height: 44px; padding: 0 4px; }
+
+    /* songs */
+    .tracks { display: grid; gap: 10px; list-style: none; }
     .track {
-      display: grid; grid-template-columns: 26px 46px minmax(0,1fr) auto; gap: 12px; align-items: center;
-      padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2);
+      display: grid; grid-template-columns: 52px minmax(0,1fr); gap: 14px; align-items: center;
+      padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2);
     }
     .track.on { border-color: var(--gold); background: var(--ink-3); }
-    .num { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; }
-    .play { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 50%; background: var(--brand); color: var(--paper); }
+    .play { display: grid; width: 52px; height: 52px; place-items: center; border-radius: 50%; background: var(--btn); color: var(--paper); flex: none; }
+    .play:hover { background: var(--btn-hi); }
     .track.on .play { background: var(--gold); color: var(--ink); }
-    .play svg { width: 18px; height: 18px; fill: currentColor; }
-    .t-main { min-width: 0; }
-    .t-title { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; }
-    .t-meta { color: var(--muted); font-size: 13px; }
-    .full { padding: 8px 12px; border: 1px solid var(--gold); border-radius: 999px; color: var(--gold); font-size: 13px; font-weight: 700; white-space: nowrap; min-height: 40px; }
+    .play svg { width: 20px; height: 20px; fill: currentColor; }
+    .t-main { min-width: 0; display: grid; gap: 4px; }
+    .t-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+    .t-title { font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+    .t-ver { color: var(--muted); font-size: 15px; }
+    .t-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+    .t-meta .badge { font-size: 11px; padding: 3px 9px; }
+    .full { margin-left: auto; min-height: 44px; padding: 8px 16px; border: 1.5px solid var(--gold); border-radius: 999px; color: var(--gold); font-size: 14px; font-weight: 700; }
     .full:hover { background: var(--gold); color: var(--ink); }
-    .excl { padding: 7px 11px; border: 1px solid var(--brand-hi); border-radius: 999px; color: var(--brand-hi); font-size: 12px; font-weight: 700; white-space: nowrap; letter-spacing: .04em; }
-    .exhead { margin: 26px 0 8px; font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--gold); }
-    .num { font-size: 12px; }
-    @media (max-width: 440px) { .num { display: none; } .track { grid-template-columns: 46px minmax(0,1fr) auto; } .full { padding: 8px 10px; } }
+    .explain { margin-top: 22px; padding: 18px; border: 1.5px solid var(--accent); border-radius: var(--r-lg); background: var(--ink-2); display: grid; gap: 8px; }
+    .explain h3 { font-family: var(--serif); font-size: 21px; font-weight: 600; color: var(--paper); }
+    .explain p { color: var(--muted); }
+    .explain strong { color: var(--paper); }
 
-    /* news */
-    .news { display: grid; gap: 10px; }
+    /* find MP */
+    .links { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .links a { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 52px; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2); color: var(--paper); font-weight: 600; text-decoration: none; }
+    .links a:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* news + wall */
+    .news, .wall { display: grid; gap: 10px; }
     .post { padding: 16px 18px; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: var(--r); background: var(--ink-2); }
-    .post-when { color: var(--brand-hi); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-    .post-t { margin-top: 3px; font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: 1.25; }
+    .post-when { color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .post-t { margin-top: 3px; font-family: var(--serif); font-size: 21px; font-weight: 600; line-height: 1.25; }
     .post-b { margin-top: 6px; color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
-    .empty { padding: 18px; border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); font-size: 14.5px; }
-
-    /* forms */
-    .card { padding: 20px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); display: grid; gap: 12px; }
-    .card h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.2; }
-    .card p { color: var(--muted); }
-    label.f { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
-    input[type=text], input[type=email], input[type=password], textarea {
-      width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid var(--line); border-radius: var(--r);
-      background: var(--ink); color: var(--paper); font-size: 16px;
-    }
-    textarea { min-height: 104px; resize: vertical; line-height: 1.5; }
-    input:focus, textarea:focus { outline: none; border-color: var(--gold); }
-    .inline { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; }
-    @media (max-width: 440px) { .inline { grid-template-columns: 1fr; } }
-    .count { justify-self: end; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-    .msg { font-size: 14px; min-height: 1.2em; }
-    .msg.ok { color: var(--live); } .msg.err { color: var(--bad); }
-    .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-    .fine { font-size: 12.5px; color: var(--muted); }
-
-    /* wall */
-    .wall { display: grid; gap: 10px; margin-top: 14px; }
+    .empty { padding: 18px; border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); }
+    .wall { margin-top: 14px; }
     .note { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2); }
     .note-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
     .note-n { font-weight: 700; overflow-wrap: anywhere; }
-    .note-w { color: var(--muted); font-size: 12.5px; }
+    .note-w { color: var(--muted); font-size: 13px; }
     .note-t { margin-top: 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .x { margin-left: auto; color: var(--bad); font-size: 13px; font-weight: 700; padding: 4px 8px; border-radius: 8px; }
-    .x:hover { background: var(--ink-3); }
+    .x { margin-left: auto; color: var(--bad); font-size: 14px; font-weight: 700; min-height: 44px; padding: 4px 10px; border-radius: 8px; }
+    .admin { border: 2px solid var(--gold); margin-bottom: 14px; }
 
-    /* artist tools */
-    .admin { border-color: var(--gold); margin-bottom: 14px; }
-    .badge { display: inline-block; padding: 3px 10px; border: 1px solid var(--gold); border-radius: 999px; color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    footer { margin-top: 50px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: grid; gap: 6px; text-align: center; }
+    footer .tag { color: var(--gold); font-family: var(--serif); font-size: 20px; }
 
-    footer { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; text-align: center; }
-    footer .tag { color: var(--gold); font-family: var(--serif); font-size: 19px; }
-    .link-btn { color: var(--muted); text-decoration: underline; text-underline-offset: .18em; font-size: 13px; }
-
-    /* player dock + sheets */
+    /* player */
     .dock {
-      position: fixed; z-index: 50; inset: auto 0 0 0; display: none; align-items: center; gap: 14px;
-      padding: 12px 20px calc(12px + var(--safe-b)); border-top: 1px solid var(--line);
-      background: rgba(21,16,12,.96); backdrop-filter: blur(12px);
+      position: fixed; z-index: 50; inset: auto 0 0 0; display: none; align-items: center; gap: 10px;
+      padding: 10px 16px calc(10px + var(--safe-b)); border-top: 1px solid var(--line);
+      background: rgba(21,16,12,.97); backdrop-filter: blur(12px);
     }
     .dock.on { display: flex; }
-    .dock { gap: 10px; }
-    .skipbtn { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); color: var(--paper); flex: none; }
+    .skipbtn { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--line); color: var(--paper); flex: none; }
     .skipbtn:hover { border-color: var(--gold); color: var(--gold); }
-    .skipbtn svg { width: 20px; height: 20px; fill: currentColor; }
-    .dock-main { margin-left: 4px; }
-    .playall { margin: -4px 0 14px; }
-    .dock-main { min-width: 0; flex: 1; }
-    .dock-t { overflow: hidden; font-family: var(--serif); font-size: 16px; white-space: nowrap; text-overflow: ellipsis; }
-    .dock-s { color: var(--muted); font-size: 12px; }
-    .prog { height: 4px; margin-top: 7px; border-radius: 2px; background: var(--line); overflow: hidden; }
+    .skipbtn svg, .dock .play svg { width: 22px; height: 22px; fill: currentColor; }
+    .dock-main { min-width: 0; flex: 1; margin-left: 4px; }
+    .dock-t { overflow: hidden; font-family: var(--serif); font-size: 17px; white-space: nowrap; text-overflow: ellipsis; }
+    .dock-s { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+    .prog { height: 6px; margin-top: 7px; border-radius: 3px; background: var(--line); overflow: hidden; }
     .prog i { display: block; height: 100%; width: 0; background: var(--gold); }
-    dialog.sheet { width: min(440px, calc(100% - 24px)); margin: auto auto 12px; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); color: var(--paper); }
+
+    dialog.sheet { width: min(460px, calc(100% - 24px)); max-height: calc(100% - 24px); margin: auto auto 12px; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); color: var(--paper); }
     @media (min-width: 600px) { dialog.sheet { margin: auto; } }
-    dialog.sheet::backdrop { background: rgba(0,0,0,.6); }
-    .sheet-in { padding: 22px 20px 18px; display: grid; gap: 12px; }
-    .sheet-t { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.2; }
+    dialog.sheet::backdrop { background: rgba(0,0,0,.65); }
+    .sheet-in { padding: 22px 20px 20px; display: grid; gap: 12px; }
+    .sheet-t { font-family: var(--serif); font-size: 23px; font-weight: 600; line-height: 1.2; }
     .plats { display: grid; gap: 8px; }
-    .plat { display: flex; justify-content: space-between; min-height: 48px; align-items: center; padding: 11px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink); color: var(--paper); font-weight: 600; text-decoration: none; }
+    .plat { display: flex; justify-content: space-between; min-height: 50px; align-items: center; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink); color: var(--paper); font-weight: 600; text-decoration: none; }
     .plat:hover { border-color: var(--gold); color: var(--gold); }
     #smartBtn { width: 100%; }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
 <body>
+  <a class="skip" href="#songs">Skip to the songs</a>
   <div class="wrap">
     <header class="mast">
       <p class="eyebrow">Official fan page</p>
-      <h1 class="mp" aria-label="MP">MP</h1>
-      <p class="lede">Southern soul, slow jams and trap-soul out of <em>Brandon, Mississippi</em>.</p>
-      <p class="mast-meta">Ten songs out now · Written by Michael Shun McLaurin · McLearn Media</p>
-      <div class="row">
-        <a class="btn btn-a" href="#listen">Listen now</a>
-        <a class="btn btn-b" href="#join">Get updates</a>
-        <a class="btn btn-b" href="#wall">Fan wall</a>
-      </div>
+      <h1 class="mp">MP</h1>
+      <p class="who">Southern soul, slow jams and trap-soul from <em>Brandon, Mississippi</em>. Songs by Michael Shun McLaurin, released by McLearn Media.</p>
+      <ul class="cando" aria-label="What you can do here">
+        <li>Hear a free preview of every song, no account needed</li>
+        <li>Hear two versions you won't find on any app</li>
+        <li>Get new music first by email</li>
+      </ul>
     </header>
 
-    <section aria-labelledby="listen">
-      <h2 id="listen">Listen</h2>
-      <p class="hint">Tap a song to hear 45 seconds. Tap <strong>Full song</strong> to play the whole thing on your streaming app.</p>
-      <button class="btn btn-a playall" type="button" id="playAll">▶ Play all 12</button>
-      <div class="tracks" id="tracks"></div>
-      <h3 class="exhead">Fan page exclusives</h3>
-      <p class="hint">Second recordings you can only hear here. Not on the streaming apps.</p>
-      <div class="tracks" id="exTracks"></div>
-    </section>
-
-    <section aria-labelledby="news">
-      <h2 id="news">News from MP</h2>
-      <div class="card admin" id="composer" hidden>
-        <p><span class="badge">Artist</span></p>
-        <h3>Post an update</h3>
-        <label class="f" for="uTitle">Headline<input type="text" id="uTitle" maxlength="80" placeholder="New song this Friday" /></label>
-        <label class="f" for="uText">Message<textarea id="uText" maxlength="600" placeholder="Tell fans what's coming, where to hear it, or what you're working on."></textarea></label>
-        <div class="row"><button class="btn btn-a" type="button" id="uPost">Post update</button><button class="btn btn-b" type="button" id="dlEmails">Download fan emails</button></div>
-        <p class="msg" id="uMsg" role="status"></p>
-      </div>
-      <div class="news" id="newsList"><p class="empty">Loading news…</p></div>
-    </section>
-
-    <section aria-labelledby="join">
-      <h2 id="join">Get updates</h2>
-      <form class="card" id="subForm" novalidate>
-        <h3>Hear new songs first.</h3>
-        <p>Leave your email and MP will let you know when new music drops. No spam, and you can leave the list any time.</p>
-        <div class="inline">
-          <label class="sr" for="subEmail">Email address</label>
-          <input type="email" id="subEmail" autocomplete="email" placeholder="you@example.com" required />
-          <button class="btn btn-a" type="submit" id="subBtn">Sign me up</button>
+    <main>
+      <section class="feature" aria-labelledby="fTitle" id="feature">
+        <span class="badge new">Newest release</span>
+        <h2 class="sr">Newest release</h2>
+        <p class="f-title" id="fTitle">—</p>
+        <p class="f-meta" id="fMeta">—</p>
+        <div class="row">
+          <button class="btn btn-a bigplay" type="button" id="fPlay"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="fIcon" d="M8 5v14l11-7z"/></svg><span id="fPlayTxt">Play preview</span></button>
+          <button class="btn btn-b" type="button" id="fFull">Full song</button>
         </div>
-        <div class="trap" aria-hidden="true"><label for="subWeb">Leave blank</label><input type="text" id="subWeb" tabindex="-1" autocomplete="off" /></div>
-        <p class="msg" id="subMsg" role="status"></p>
-        <p class="fine">Your email is only used to send MP news. See <a href="/legal.html#fans">Privacy</a>. <button class="link-btn" type="button" id="leaveBtn">Leave the list</button></p>
-      </form>
-    </section>
+      </section>
 
-    <section aria-labelledby="wall">
-      <h2 id="wall">Fan wall</h2>
-      <form class="card" id="cForm" novalidate>
-        <h3>Say something to MP.</h3>
-        <label class="f" for="cName">Your name<input type="text" id="cName" maxlength="40" autocomplete="nickname" placeholder="First name or nickname" /></label>
-        <label class="f" for="cText">Your message<textarea id="cText" maxlength="500" required placeholder="Which song hit you? Where were you when you heard it?"></textarea></label>
-        <span class="count" id="cCount">0 / 500</span>
-        <div class="trap" aria-hidden="true"><label for="cWeb">Leave blank</label><input type="text" id="cWeb" tabindex="-1" autocomplete="off" /></div>
-        <div class="row"><button class="btn btn-a" type="submit" id="cBtn">Post to the wall</button></div>
-        <p class="msg" id="cMsg" role="status"></p>
-        <p class="fine">Everyone can see what you post. Keep it kind. Links aren't allowed, and MP removes anything hateful or spammy.</p>
-      </form>
-      <div class="wall" id="wallList"><p class="empty">Loading the wall…</p></div>
-    </section>
+      <section aria-labelledby="joinH" id="join">
+        <h2 id="joinH">Get new music first</h2>
+        <form class="card join" id="subForm" novalidate>
+          <h3>Join the MP email list</h3>
+          <ul class="gets">
+            <li>An email the day each new song comes out</li>
+            <li>First listen to new fan-page-only versions</li>
+            <li>No more than 2 emails a month. Leave anytime.</li>
+          </ul>
+          <div class="inline">
+            <label class="sr" for="subEmail">Your email address</label>
+            <input type="email" id="subEmail" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
+            <button class="btn btn-a" type="submit" id="subBtn">Sign me up</button>
+          </div>
+          <div class="trap" aria-hidden="true"><label for="subWeb">Leave blank</label><input type="text" id="subWeb" tabindex="-1" autocomplete="off" /></div>
+          <p class="msg" id="subMsg" role="status" aria-live="polite"></p>
+          <p class="fine">We only use your email for MP news. <a href="/legal.html#fans">Privacy</a> · <button class="link-btn" type="button" id="leaveBtn">Leave the list</button></p>
+        </form>
+      </section>
+
+      <section aria-labelledby="songs" id="songsSec">
+        <h2 id="songs" tabindex="-1">All songs</h2>
+        <p class="hint">Tap ▶ for a free 45-second preview. Tap <strong>Full song</strong> to play the whole song on your music app.</p>
+        <div class="row" style="margin-bottom:14px"><button class="btn btn-a" type="button" id="playAll"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Play all 12 previews</button></div>
+        <ul class="tracks" id="tracks" aria-label="Songs on all music apps"></ul>
+
+        <div class="explain" id="only">
+          <span class="badge only">Fan page only</span>
+          <h3>What "fan page only" means</h3>
+          <p>These are <strong>second recordings</strong> of two MP songs. They are <strong>not on Spotify, Apple Music or any other app</strong>. This page is the only place to hear them.</p>
+          <p><strong>How to get access:</strong> nothing to pay and no account. Tap ▶ below to hear the preview. <a href="#join">Join the email list</a> to hear first if the full versions are released.</p>
+        </div>
+        <ul class="tracks" id="exTracks" aria-label="Fan page only versions" style="margin-top:12px"></ul>
+      </section>
+
+      <section aria-labelledby="findH">
+        <h2 id="findH">Find MP everywhere</h2>
+        <p class="hint">Follow MP on your music app so new songs show up for you.</p>
+        <div class="links" id="profiles"></div>
+        <div class="links" id="socials" style="margin-top:10px" hidden></div>
+      </section>
+
+      <section aria-labelledby="newsH">
+        <h2 id="newsH">News from MP</h2>
+        <div class="card admin" id="composer" hidden>
+          <span class="badge new">Artist</span>
+          <h3>Post an update</h3>
+          <label class="f" for="uTitle">Headline<input type="text" id="uTitle" maxlength="80" placeholder="New song this Friday" /></label>
+          <label class="f" for="uText">Message<textarea id="uText" maxlength="600" placeholder="Tell fans what's coming, where to hear it, or what you're working on."></textarea></label>
+          <div class="row"><button class="btn btn-a" type="button" id="uPost">Post update</button><button class="btn btn-b" type="button" id="dlEmails">Download fan emails</button></div>
+          <p class="msg" id="uMsg" role="status" aria-live="polite"></p>
+        </div>
+        <div class="news" id="newsList" aria-live="polite"><p class="empty">Loading news…</p></div>
+      </section>
+
+      <section aria-labelledby="wallH" id="wall">
+        <h2 id="wallH">Fan wall</h2>
+        <form class="card" id="cForm" novalidate>
+          <h3>Say something to MP</h3>
+          <p>Which song hit you? Your message shows up here for everyone to read.</p>
+          <label class="f" for="cName">Your name<input type="text" id="cName" maxlength="40" autocomplete="nickname" placeholder="First name or nickname" /></label>
+          <label class="f" for="cText">Your message<textarea id="cText" maxlength="500" required placeholder="Which song hit you? Where were you when you heard it?" aria-describedby="cCount"></textarea></label>
+          <span class="count" id="cCount">0 / 500</span>
+          <div class="trap" aria-hidden="true"><label for="cWeb">Leave blank</label><input type="text" id="cWeb" tabindex="-1" autocomplete="off" /></div>
+          <div class="row"><button class="btn btn-a" type="submit" id="cBtn">Post to the wall</button></div>
+          <p class="msg" id="cMsg" role="status" aria-live="polite"></p>
+          <p class="fine">Keep it kind. Links aren't allowed. MP removes anything hateful or spammy.</p>
+        </form>
+        <div class="wall" id="wallList" aria-live="polite"><p class="empty">Loading the wall…</p></div>
+      </section>
+    </main>
 
     <footer>
       <p class="tag">One Sound. Many Stories.</p>
@@ -243,16 +296,17 @@
     </footer>
   </div>
 
-  <div class="dock" id="dock" role="region" aria-label="Player">
-    <button class="skipbtn" id="backBtn" type="button" aria-label="Previous song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" /></svg></button>
-    <button class="play" id="dockBtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="dockIcon" d="M6 19h4V5H6zm8-14v14h4V5z" /></svg></button>
-    <button class="skipbtn" id="skipBtn" type="button" aria-label="Skip to next song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" /></svg></button>
+  <div class="dock" id="dock" role="region" aria-label="Music player">
+    <button class="skipbtn" id="backBtn" type="button" aria-label="Previous song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+    <button class="play" id="dockBtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="dockIcon" d="M6 19h4V5H6zm8-14v14h4V5z"/></svg></button>
+    <button class="skipbtn" id="skipBtn" type="button" aria-label="Next song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
     <div class="dock-main">
       <div class="dock-t" id="dockT">—</div>
-      <div class="dock-s">45-second preview · MP</div>
-      <div class="prog"><i id="dockP"></i></div>
+      <div class="dock-s" id="dockS">Preview</div>
+      <div class="prog" role="progressbar" aria-label="Preview progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progBar"><i id="dockP"></i></div>
     </div>
   </div>
+  <p class="sr" id="live" aria-live="polite"></p>
 
   <dialog class="sheet" id="sheet" aria-labelledby="sheetT">
     <div class="sheet-in">
@@ -290,22 +344,23 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
 
-  /* ---- Songs. Add new releases at the top of this list. -------------------- */
+  /* ---- Songs. The first song is shown as "Newest release". Lengths are the full songs. ---- */
   const SONGS = [
-    { t: "These Regrets",     g: "Southern Soul",  f: "/audio/these-regrets.mp3" },
-    { t: "Who Got Your Back", g: "Soul / Rap",     f: "/audio/who-got-your-back.mp3" },
-    { t: "Can I?",            g: "Southern Soul",  f: "/audio/can-i.mp3" },
-    { t: "Rain and You",      g: "Slow Ballad",    f: "/audio/rain-and-you.mp3" },
-    { t: "TEA",               g: "Slow Jam",       f: "/audio/tea.mp3" },
-    { t: "I See You",         g: "Southern Soul",  f: "/audio/i-see-you.mp3" },
-    { t: "Who Am I",          g: "Slow Ballad",    f: "/audio/who-am-i.mp3" },
-    { t: "Hey You",           g: "Rhythm & Soul",  f: "/audio/hey-you.mp3" },
-    { t: "I Can't Tell",      g: "Southern Soul",  f: "/audio/i-cant-tell.mp3" },
-    { t: "Thank You",         g: "Trap-Soul Duet", f: "/audio/thank-you-remix.mp3" },
-    // Fan page exclusives: second recordings of released songs, not on streaming apps.
-    { t: "Who Got Your Back", g: "Flow Mix",          f: "/audio/who-got-your-back-flow.mp3", x: true },
-    { t: "I See You",         g: "Alternate Version", f: "/audio/i-see-you-alt.mp3",          x: true }
+    { t: "Thank You",         v: "Trap-Soul Duet",    len: "4:02", f: "/audio/thank-you-remix.mp3" },
+    { t: "These Regrets",     v: "Southern Soul",     len: "4:10", f: "/audio/these-regrets.mp3" },
+    { t: "Who Got Your Back", v: "Soul / Rap",        len: "4:46", f: "/audio/who-got-your-back.mp3" },
+    { t: "Can I?",            v: "Southern Soul",     len: "6:27", f: "/audio/can-i.mp3" },
+    { t: "Rain and You",      v: "Slow Ballad",       len: "4:22", f: "/audio/rain-and-you.mp3" },
+    { t: "TEA",               v: "Slow Jam",          len: "3:06", f: "/audio/tea.mp3" },
+    { t: "I See You",         v: "Southern Soul",     len: "4:20", f: "/audio/i-see-you.mp3" },
+    { t: "Who Am I",          v: "Slow Ballad",       len: "3:19", f: "/audio/who-am-i.mp3" },
+    { t: "Hey You",           v: "Rhythm & Soul",     len: "3:02", f: "/audio/hey-you.mp3" },
+    { t: "I Can't Tell",      v: "Southern Soul",     len: "3:27", f: "/audio/i-cant-tell.mp3" },
+    // Fan page only: second recordings, not on any app.
+    { t: "Who Got Your Back", v: "Flow Mix",          len: "5:01", f: "/audio/who-got-your-back-flow.mp3", x: true },
+    { t: "I See You",         v: "Alternate Version", len: "4:08", f: "/audio/i-see-you-alt.mp3",          x: true }
   ];
+  const PREVIEW = "0:45";
   const PLATFORMS = [
     ["Spotify",       (q) => "https://open.spotify.com/search/" + encodeURIComponent(q)],
     ["Apple Music",   (q) => "https://music.apple.com/us/search?term=" + encodeURIComponent(q)],
@@ -316,88 +371,148 @@
     ["TIDAL",         (q) => "https://listen.tidal.com/search?q=" + encodeURIComponent(q)],
     ["Deezer",        (q) => "https://www.deezer.com/search/" + encodeURIComponent(q)]
   ];
-  /* ---- Too Lost smart links. Paste each song's too.fm link between the quotes.
-     A song with a link gets a "Play everywhere" button at the top of its Full song menu. */
-  const SMART = {
+  /* ---- Paste links here as you get them. Empty ones fall back to a search. ---------------- */
+  const SMART = {   // Too Lost too.fm link per song → "Play everywhere" button
     "These Regrets": "", "Who Got Your Back": "", "Can I?": "", "Rain and You": "", "TEA": "",
     "I See You": "", "Who Am I": "", "Hey You": "", "I Can't Tell": "", "Thank You": ""
   };
-  /* ---- TikTok sound links. Paste each song's TikTok sound link to open it directly. */
-  const TIKTOK = {
+  const TIKTOK = {  // TikTok sound link per song
     "These Regrets": "", "Who Got Your Back": "", "Can I?": "", "Rain and You": "", "TEA": "",
     "I See You": "", "Who Am I": "", "Hey You": "", "I Can't Tell": "", "Thank You": ""
+  };
+  const PROFILES = { // MP's artist page on each app (empty = search instead)
+    "Spotify": "", "Apple Music": "", "YouTube Music": "", "Amazon Music": "", "TikTok": "", "Pandora": ""
+  };
+  const SOCIALS = {  // social pages; a row appears once at least one is filled in
+    "TikTok": "", "Instagram": "", "Facebook": "", "YouTube": "", "X": ""
   };
 
-  /* ---- Player --------------------------------------------------------------- */
+  /* ---- Player ---------------------------------------------------------------------------- */
   const PLAY = "M8 5v14l11-7z", PAUSE = "M6 19h4V5H6zm8-14v14h4V5z";
   const audio = new Audio(); audio.preload = "none";
   let current = -1;
-  const list = $("tracks");
-  const exList = $("exTracks");
-  SONGS.forEach((s, i) => {
-    const row = document.createElement("div");
-    row.className = "track"; row.dataset.i = i;
-    row.innerHTML = '<span class="num"></span><button class="play" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY + '"/></svg></button><span class="t-main"><span class="t-title"></span><br><span class="t-meta"></span></span><button class="full" type="button">Full song</button>';
-    row.querySelector(".num").textContent = s.x ? "EX" : String(i + 1).padStart(2, "0");
-    row.querySelector(".t-title").textContent = s.t;
-    row.querySelector(".t-meta").textContent = s.g;
-    const pb = row.querySelector(".play");
-    pb.setAttribute("aria-label", "Play a preview of " + s.t);
+  const label = (s) => s.t + (s.x ? " (" + s.v + ")" : "");
+  const say = (m) => { $("live").textContent = ""; setTimeout(() => { $("live").textContent = m; }, 30); };
+
+  function buildRow(s, i) {
+    const li = document.createElement("li");
+    li.className = "track"; li.dataset.i = i;
+    li.innerHTML =
+      '<button class="play" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + PLAY + '"/></svg></button>' +
+      '<div class="t-main"><div class="t-top"><span class="t-title"></span><span class="t-ver"></span></div>' +
+      '<div class="t-meta"><span class="len"></span><span class="badge"></span></div></div>';
+    li.querySelector(".t-title").textContent = s.t;
+    li.querySelector(".t-ver").textContent = s.v;
+    li.querySelector(".len").textContent = "Preview " + PREVIEW + " · Full song " + s.len;
+    const b = li.querySelector(".badge");
+    b.className = "badge " + (s.x ? "only" : "apps"); b.textContent = s.x ? "Fan page only" : "On all apps";
+    const pb = li.querySelector(".play");
+    pb.setAttribute("aria-label", "Play preview of " + label(s));
     pb.addEventListener("click", () => select(i));
-    if (s.x) {
-      const tag = document.createElement("span"); tag.className = "excl"; tag.textContent = "Only here";
-      row.querySelector(".full").replaceWith(tag);
-      exList.appendChild(row);
-    } else {
-      row.querySelector(".full").addEventListener("click", (e) => openSheet(s.t, e.currentTarget));
-      row.querySelector(".full").setAttribute("aria-label", "Play the full song " + s.t + " on a streaming app");
-      list.appendChild(row);
+    if (!s.x) {
+      const full = document.createElement("button");
+      full.type = "button"; full.className = "full"; full.textContent = "Full song";
+      full.setAttribute("aria-label", "Play the full song " + s.t + " on a music app");
+      full.addEventListener("click", (e) => openSheet(s.t, e.currentTarget));
+      li.querySelector(".t-meta").appendChild(full);
     }
-  });
+    return li;
+  }
+  SONGS.forEach((s, i) => (s.x ? $("exTracks") : $("tracks")).appendChild(buildRow(s, i)));
+
+  // newest release card
+  const NEW = 0;
+  $("fTitle").textContent = SONGS[NEW].t;
+  $("fMeta").textContent = SONGS[NEW].v + " · Full song " + SONGS[NEW].len + " · Free preview " + PREVIEW + " · On all apps";
+  $("fPlay").addEventListener("click", () => select(NEW));
+  $("fFull").addEventListener("click", (e) => openSheet(SONGS[NEW].t, e.currentTarget));
+
   function paint() {
-    document.querySelectorAll(".track[data-i]").forEach((row) => { const i = Number(row.dataset.i);
-      const on = i === current && !audio.paused;
+    document.querySelectorAll(".track[data-i]").forEach((row) => {
+      const i = Number(row.dataset.i), on = i === current && !audio.paused;
       row.classList.toggle("on", i === current);
-      row.querySelector(".play path").setAttribute("d", on ? PAUSE : PLAY);
+      const pb = row.querySelector(".play");
+      pb.querySelector("path").setAttribute("d", on ? PAUSE : PLAY);
+      pb.setAttribute("aria-pressed", on ? "true" : "false");
+      pb.setAttribute("aria-label", (on ? "Pause " : "Play preview of ") + label(SONGS[i]));
     });
+    const fOn = current === NEW && !audio.paused;
+    $("fIcon").setAttribute("d", fOn ? PAUSE : PLAY); $("fPlayTxt").textContent = fOn ? "Pause" : "Play preview";
     $("dock").classList.toggle("on", current >= 0);
     if (current >= 0) {
-      $("dockT").textContent = SONGS[current].t;
+      $("dockT").textContent = label(SONGS[current]);
       $("dockIcon").setAttribute("d", audio.paused ? PLAY : PAUSE);
       $("dockBtn").setAttribute("aria-label", audio.paused ? "Play" : "Pause");
     }
   }
   function select(i) {
     if (i === current) { audio.paused ? audio.play().catch(() => {}) : audio.pause(); return paint(); }
-    current = i; audio.src = SONGS[i].f; audio.play().catch(() => {}); paint();
+    current = i; audio.src = SONGS[i].f;
+    audio.play().catch(() => say("Tap play again to start the music."));
+    paint(); say("Playing " + label(SONGS[i]) + ", 45-second preview.");
   }
+  const step = (d) => select(current < 0 ? 0 : (current + d + SONGS.length) % SONGS.length);
+  const fmt = (t) => Math.floor(t / 60) + ":" + String(Math.floor(t % 60)).padStart(2, "0");
   $("dockBtn").addEventListener("click", () => select(current));
-  const step = (d) => { if (current < 0) return select(0); select((current + d + SONGS.length) % SONGS.length); };
   $("skipBtn").addEventListener("click", () => step(1));
   $("backBtn").addEventListener("click", () => { if (audio.currentTime > 3) { audio.currentTime = 0; audio.play().catch(() => {}); } else step(-1); });
   $("playAll").addEventListener("click", () => select(0));
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+    const pct = audio.currentTime / audio.duration * 100;
+    $("dockP").style.width = pct + "%"; $("progBar").setAttribute("aria-valuenow", Math.round(pct));
+    $("dockS").textContent = "Preview " + fmt(audio.currentTime) + " / " + fmt(audio.duration);
+  });
+  audio.addEventListener("ended", () => { if (current < SONGS.length - 1) select(current + 1); else { current = -1; paint(); } });
+  audio.addEventListener("play", paint); audio.addEventListener("pause", paint);
+  audio.addEventListener("error", () => say("That preview couldn't load. Check your connection and try again."));
+  // keyboard: Space = play/pause, ← → = previous/next (not while typing)
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target.tagName || "").toLowerCase();
+    if (["input", "textarea", "button", "a", "select"].includes(tag) || e.target.isContentEditable || document.querySelector("dialog[open]")) return;
+    if (e.key === " " && current >= 0) { e.preventDefault(); select(current); }
+    else if (e.key === "ArrowRight" && current >= 0) step(1);
+    else if (e.key === "ArrowLeft" && current >= 0) step(-1);
+  });
   if ("mediaSession" in navigator) {
     try {
       navigator.mediaSession.setActionHandler("nexttrack", () => step(1));
       navigator.mediaSession.setActionHandler("previoustrack", () => step(-1));
-      audio.addEventListener("play", () => { navigator.mediaSession.metadata = new MediaMetadata({ title: SONGS[current].t, artist: "MP", album: "McLearn Media" }); });
+      audio.addEventListener("play", () => { navigator.mediaSession.metadata = new MediaMetadata({ title: label(SONGS[current]), artist: "MP", album: "McLearn Media" }); });
     } catch {}
   }
-  audio.addEventListener("timeupdate", () => { if (audio.duration) $("dockP").style.width = (audio.currentTime / audio.duration * 100) + "%"; });
-  audio.addEventListener("ended", () => { if (current < SONGS.length - 1) select(current + 1); else { current = -1; paint(); } });
-  audio.addEventListener("play", paint); audio.addEventListener("pause", paint);
 
-  /* ---- Dialog helpers ------------------------------------------------------- */
+  /* ---- Find MP ------------------------------------------------------------------------------- */
+  Object.entries(PROFILES).forEach(([name, url]) => {
+    const make = (PLATFORMS.find((p) => p[0] === name) || [])[1];
+    const a = document.createElement("a");
+    a.href = url || (make ? make("MP These Regrets") : "#"); a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = "<span></span><span aria-hidden=\"true\">↗</span>"; a.firstChild.textContent = name;
+    a.setAttribute("aria-label", "MP on " + name + " (opens in a new tab)");
+    $("profiles").appendChild(a);
+  });
+  const socials = Object.entries(SOCIALS).filter(([, u]) => u);
+  if (socials.length) {
+    $("socials").hidden = false;
+    socials.forEach(([name, url]) => {
+      const a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = "<span></span><span aria-hidden=\"true\">↗</span>"; a.firstChild.textContent = name;
+      a.setAttribute("aria-label", "MP on " + name + " (opens in a new tab)");
+      $("socials").appendChild(a);
+    });
+  }
+
+  /* ---- Dialogs -------------------------------------------------------------------------------- */
   const open = (d) => (typeof d.showModal === "function" ? d.showModal() : d.setAttribute("open", ""));
   const shut = (d) => (typeof d.close === "function" ? d.close() : d.removeAttribute("open"));
   let opener = null;
   function openSheet(title, from) {
     opener = from;
     $("sheetT").textContent = title + " · MP";
-    const p = $("plats"); p.textContent = "";
     const smart = (SMART[title] || "").trim(), tt = (TIKTOK[title] || "").trim();
     $("smartBtn").hidden = !smart; if (smart) $("smartBtn").href = smart;
     $("ttNote").hidden = !!tt;
+    const p = $("plats"); p.textContent = "";
     PLATFORMS.forEach(([name, make]) => {
       const a = document.createElement("a");
       a.className = "plat"; a.href = (name === "TikTok" && tt) ? tt : make("MP " + title); a.target = "_blank"; a.rel = "noopener";
@@ -406,18 +521,17 @@
       p.appendChild(a);
     });
     $("copyName").textContent = "Copy song name"; $("copyName").dataset.q = "MP " + title;
-    open($("sheet"));
+    open($("sheet")); (smart ? $("smartBtn") : p.firstChild).focus();
   }
   $("sheetX").addEventListener("click", () => shut($("sheet")));
+  $("sheet").addEventListener("close", () => opener && opener.focus());
   $("copyName").addEventListener("click", async (e) => {
     const b = e.currentTarget, q = b.dataset.q || "";
-    try { await navigator.clipboard.writeText(q); b.textContent = "Copied: " + q; }
-    catch { b.textContent = q; }
+    try { await navigator.clipboard.writeText(q); b.textContent = "Copied: " + q; } catch { b.textContent = q; }
   });
-  $("sheet").addEventListener("close", () => opener && opener.focus());
   document.querySelectorAll("dialog.sheet").forEach((d) => d.addEventListener("click", (e) => { if (e.target === d) shut(d); }));
 
-  /* ---- Talking to the server ------------------------------------------------ */
+  /* ---- Server --------------------------------------------------------------------------------- */
   let adminKey = "";
   try { adminKey = sessionStorage.getItem("mpAdmin") || ""; } catch {}
   async function api(path, opts = {}) {
@@ -431,8 +545,7 @@
     if (!res.ok) { const e = new Error(data.error || "Something went wrong. Try again."); e.status = res.status; throw e; }
     return data;
   }
-  const say = (el, text, ok) => { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); };
-
+  const msg = (el, text, ok) => { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); };
   function when(ts) {
     const s = Math.round((Date.now() - ts) / 1000);
     if (s < 60) return "just now";
@@ -442,7 +555,7 @@
     return new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
   }
 
-  let comments = [], updates = [], live = false;
+  let comments = [], updates = [], live = null;
   function delBtn(kind, id) {
     const b = document.createElement("button");
     b.type = "button"; b.className = "x"; b.textContent = "Remove";
@@ -457,13 +570,16 @@
     });
     return b;
   }
+  function empty(text, linkText, href) {
+    const p = document.createElement("p"); p.className = "empty"; p.textContent = text + " ";
+    if (linkText) { const a = document.createElement("a"); a.href = href; a.textContent = linkText; p.appendChild(a); }
+    return p;
+  }
   function render() {
     const n = $("newsList"); n.textContent = "";
-    if (!updates.length) {
-      const p = document.createElement("p"); p.className = "empty";
-      p.textContent = live ? "No news yet. Sign up below and you'll hear it first." : "News will show here soon.";
-      n.appendChild(p);
-    }
+    if (!updates.length) n.appendChild(live === false
+      ? empty("News couldn't load right now.", "Join the email list", "#join")
+      : empty("No news yet. The next update goes to the email list first.", "Join the list", "#join"));
     updates.forEach((u) => {
       const el = document.createElement("article"); el.className = "post";
       el.innerHTML = '<p class="post-when"></p><h3 class="post-t"></h3><p class="post-b"></p>';
@@ -474,11 +590,9 @@
       n.appendChild(el);
     });
     const w = $("wallList"); w.textContent = "";
-    if (!comments.length) {
-      const p = document.createElement("p"); p.className = "empty";
-      p.textContent = live ? "Nobody has posted yet. Be the first to say something." : "The fan wall opens soon.";
-      w.appendChild(p);
-    }
+    if (!comments.length) w.appendChild(live === false
+      ? empty("The wall couldn't load right now. Try again in a minute.")
+      : empty("No posts yet. Be the first to say something above."));
     comments.forEach((c) => {
       const el = document.createElement("article"); el.className = "note";
       el.innerHTML = '<div class="note-h"><span class="note-n"></span><span class="note-w"></span></div><p class="note-t"></p>';
@@ -491,47 +605,47 @@
   }
   async function load() {
     try { const d = await api("/api/wall"); comments = d.comments || []; updates = d.updates || []; live = true; }
-    catch { live = false; ["cBtn", "subBtn"].forEach((id) => { $(id).disabled = true; }); }
+    catch { live = false; }
     render();
   }
 
-  /* ---- Fan wall ------------------------------------------------------------- */
+  /* ---- Fan wall ------------------------------------------------------------------------------- */
   try { $("cName").value = localStorage.getItem("mpName") || ""; } catch {}
   $("cText").addEventListener("input", () => { $("cCount").textContent = $("cText").value.length + " / 500"; });
   $("cForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const text = $("cText").value.trim(), name = $("cName").value.trim();
-    if (text.length < 2) return say($("cMsg"), "Write a little more before posting.", false);
+    if (text.length < 2) { $("cText").focus(); return msg($("cMsg"), "Write a little more before posting.", false); }
     $("cBtn").disabled = true;
     try {
       const d = await api("/api/comments", { method: "POST", body: { name, text, website: $("cWeb").value } });
       if (d.comment) comments.unshift(d.comment);
       try { localStorage.setItem("mpName", name); } catch {}
       $("cText").value = ""; $("cCount").textContent = "0 / 500";
-      say($("cMsg"), "Posted. Thanks for the love.", true); render();
-    } catch (err) { say($("cMsg"), err.message, false); }
+      msg($("cMsg"), "Posted. Thanks for the love.", true); render();
+    } catch (err) { msg($("cMsg"), err.message, false); }
     finally { $("cBtn").disabled = false; }
   });
 
-  /* ---- Email list ----------------------------------------------------------- */
+  /* ---- Email list ----------------------------------------------------------------------------- */
   $("subForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = $("subEmail").value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return say($("subMsg"), "That email address doesn't look right. Check it and try again.", false);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { $("subEmail").focus(); return msg($("subMsg"), "That email address doesn't look right. Check it and try again.", false); }
     $("subBtn").disabled = true;
-    try { await api("/api/subscribe", { method: "POST", body: { email, website: $("subWeb").value } }); $("subEmail").value = ""; say($("subMsg"), "You're on the list. New music comes to you first.", true); }
-    catch (err) { say($("subMsg"), err.message, false); }
+    try { await api("/api/subscribe", { method: "POST", body: { email, website: $("subWeb").value } }); $("subEmail").value = ""; msg($("subMsg"), "You're on the list. The next new song comes to you first.", true); }
+    catch (err) { msg($("subMsg"), err.message, false); }
     finally { $("subBtn").disabled = false; }
   });
   $("leaveBtn").addEventListener("click", () => { $("leaveMsg").textContent = ""; open($("leaveSheet")); $("leaveEmail").focus(); });
   $("leaveX").addEventListener("click", () => shut($("leaveSheet")));
   $("leaveForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    try { await api("/api/unsubscribe", { method: "POST", body: { email: $("leaveEmail").value.trim() } }); say($("leaveMsg"), "Done. That address is off the list.", true); $("leaveEmail").value = ""; }
-    catch (err) { say($("leaveMsg"), err.message, false); }
+    try { await api("/api/unsubscribe", { method: "POST", body: { email: $("leaveEmail").value.trim() } }); msg($("leaveMsg"), "Done. That address is off the list.", true); $("leaveEmail").value = ""; }
+    catch (err) { msg($("leaveMsg"), err.message, false); }
   });
 
-  /* ---- Artist tools --------------------------------------------------------- */
+  /* ---- Artist tools --------------------------------------------------------------------------- */
   function showAdmin() {
     $("composer").hidden = !adminKey;
     $("artistBtn").textContent = adminKey ? "Sign out of artist tools" : "Artist sign-in";
@@ -548,18 +662,18 @@
     try {
       await api("/api/admin/check", { admin: true });
       try { sessionStorage.setItem("mpAdmin", adminKey); } catch {}
-      shut($("authSheet")); showAdmin(); $("news").scrollIntoView({ behavior: "smooth" });
-    } catch (err) { adminKey = ""; say($("authMsg"), err.message, false); }
+      shut($("authSheet")); showAdmin(); $("newsH").scrollIntoView({ behavior: "smooth" });
+    } catch (err) { adminKey = ""; msg($("authMsg"), err.message, false); }
   });
   $("uPost").addEventListener("click", async () => {
     const title = $("uTitle").value.trim(), text = $("uText").value.trim();
-    if (!title && !text) return say($("uMsg"), "Write a headline or a message first.", false);
+    if (!title && !text) return msg($("uMsg"), "Write a headline or a message first.", false);
     $("uPost").disabled = true;
     try {
       const d = await api("/api/admin/updates", { method: "POST", admin: true, body: { title, text } });
       updates.unshift(d.update); $("uTitle").value = ""; $("uText").value = "";
-      say($("uMsg"), "Posted. Fans can see it now.", true); render();
-    } catch (err) { say($("uMsg"), err.message, false); }
+      msg($("uMsg"), "Posted. Fans can see it now.", true); render();
+    } catch (err) { msg($("uMsg"), err.message, false); }
     finally { $("uPost").disabled = false; }
   });
   $("dlEmails").addEventListener("click", async () => {
@@ -568,13 +682,12 @@
       const url = URL.createObjectURL(await res.blob());
       const a = document.createElement("a"); a.href = url; a.download = "mp-fan-emails.csv"; document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
-      say($("uMsg"), "Fan email list downloaded.", true);
-    } catch (err) { say($("uMsg"), err.message, false); }
+      msg($("uMsg"), "Fan email list downloaded.", true);
+    } catch (err) { msg($("uMsg"), err.message, false); }
   });
 
   if (adminKey) api("/api/admin/check", { admin: true }).catch(() => { adminKey = ""; try { sessionStorage.removeItem("mpAdmin"); } catch {} showAdmin(); });
-  showAdmin();
-  load();
+  paint(); showAdmin(); load();
 })();
 </script>
 </body>
