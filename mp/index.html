@@ -163,6 +163,7 @@
     .plats { display: grid; gap: 8px; }
     .plat { display: flex; justify-content: space-between; min-height: 48px; align-items: center; padding: 11px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink); color: var(--paper); font-weight: 600; text-decoration: none; }
     .plat:hover { border-color: var(--gold); color: var(--gold); }
+    #smartBtn { width: 100%; }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   </style>
 </head>
@@ -257,9 +258,11 @@
     <div class="sheet-in">
       <p class="eyebrow">Full song</p>
       <h3 class="sheet-t" id="sheetT">—</h3>
+      <a class="btn btn-a" id="smartBtn" target="_blank" rel="noopener" hidden>▶ Play everywhere</a>
       <div class="plats" id="plats"></div>
-      <p class="fine">On TikTok, search MP and the song title to hear it and use it in your own videos. New releases can take a few days to reach every app.</p>
-      <button class="btn btn-b" type="button" id="sheetX">Close</button>
+      <p class="fine" id="ttNote"><strong>On TikTok:</strong> tap TikTok above, then the <strong>Sounds</strong> tab, to play the song and use it in your own videos.</p>
+      <div class="row"><button class="btn btn-b" type="button" id="copyName">Copy song name</button><button class="btn btn-b" type="button" id="sheetX">Close</button></div>
+      <p class="fine">New releases can take a few days to reach every app.</p>
     </div>
   </dialog>
 
@@ -308,11 +311,22 @@
     ["Apple Music",   (q) => "https://music.apple.com/us/search?term=" + encodeURIComponent(q)],
     ["YouTube Music", (q) => "https://music.youtube.com/search?q=" + encodeURIComponent(q)],
     ["Amazon Music",  (q) => "https://music.amazon.com/search/" + encodeURIComponent(q)],
-    ["TIDAL",         (q) => "https://listen.tidal.com/search?q=" + encodeURIComponent(q)],
-    ["Deezer",        (q) => "https://www.deezer.com/search/" + encodeURIComponent(q)],
+    ["TikTok",        (q) => "https://www.tiktok.com/search?q=" + encodeURIComponent(q)],
     ["Pandora",       (q) => "https://www.pandora.com/search/" + encodeURIComponent(q) + "/all"],
-    ["TikTok",        (q) => "https://www.tiktok.com/search?q=" + encodeURIComponent(q)]
+    ["TIDAL",         (q) => "https://listen.tidal.com/search?q=" + encodeURIComponent(q)],
+    ["Deezer",        (q) => "https://www.deezer.com/search/" + encodeURIComponent(q)]
   ];
+  /* ---- Too Lost smart links. Paste each song's too.fm link between the quotes.
+     A song with a link gets a "Play everywhere" button at the top of its Full song menu. */
+  const SMART = {
+    "These Regrets": "", "Who Got Your Back": "", "Can I?": "", "Rain and You": "", "TEA": "",
+    "I See You": "", "Who Am I": "", "Hey You": "", "I Can't Tell": "", "Thank You": ""
+  };
+  /* ---- TikTok sound links. Paste each song's TikTok sound link to open it directly. */
+  const TIKTOK = {
+    "These Regrets": "", "Who Got Your Back": "", "Can I?": "", "Rain and You": "", "TEA": "",
+    "I See You": "", "Who Am I": "", "Hey You": "", "I Can't Tell": "", "Thank You": ""
+  };
 
   /* ---- Player --------------------------------------------------------------- */
   const PLAY = "M8 5v14l11-7z", PAUSE = "M6 19h4V5H6zm8-14v14h4V5z";
@@ -381,15 +395,25 @@
     opener = from;
     $("sheetT").textContent = title + " · MP";
     const p = $("plats"); p.textContent = "";
+    const smart = (SMART[title] || "").trim(), tt = (TIKTOK[title] || "").trim();
+    $("smartBtn").hidden = !smart; if (smart) $("smartBtn").href = smart;
+    $("ttNote").hidden = !!tt;
     PLATFORMS.forEach(([name, make]) => {
       const a = document.createElement("a");
-      a.className = "plat"; a.href = make(title + " MP"); a.target = "_blank"; a.rel = "noopener";
+      a.className = "plat"; a.href = (name === "TikTok" && tt) ? tt : make("MP " + title); a.target = "_blank"; a.rel = "noopener";
       a.innerHTML = "<span></span><span aria-hidden=\"true\">↗</span>"; a.firstChild.textContent = name;
+      a.setAttribute("aria-label", "Find " + title + " by MP on " + name + " (opens in a new tab)");
       p.appendChild(a);
     });
+    $("copyName").textContent = "Copy song name"; $("copyName").dataset.q = "MP " + title;
     open($("sheet"));
   }
   $("sheetX").addEventListener("click", () => shut($("sheet")));
+  $("copyName").addEventListener("click", async (e) => {
+    const b = e.currentTarget, q = b.dataset.q || "";
+    try { await navigator.clipboard.writeText(q); b.textContent = "Copied: " + q; }
+    catch { b.textContent = q; }
+  });
   $("sheet").addEventListener("close", () => opener && opener.focus());
   document.querySelectorAll("dialog.sheet").forEach((d) => d.addEventListener("click", (e) => { if (e.target === d) shut(d); }));
 
