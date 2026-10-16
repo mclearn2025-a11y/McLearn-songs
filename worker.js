@@ -194,6 +194,12 @@ const CAMPAIGNS = {
     image: "/mp/og-new.png",
     alt: "New music from McLearn Media: 10 new songs from MP, out now, free to listen",
   },
+  "/tiktok": {
+    title: "MP · Hear the full songs from TikTok",
+    description: "You heard it on TikTok. Play all 12 MP songs free, find the full songs on your music app, and get new music first.",
+    image: "/mp/og-new.png",
+    alt: "New music from McLearn Media: songs from MP, free to listen",
+  },
 };
 
 async function campaignPage(request, env, path) {

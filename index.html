@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>McLearn Media · New Songs</title>
   <meta name="description" content="New songs from McLearn Media, featuring MP and Michael McLaurin. Books and music out of Brandon, Mississippi." />
-  <meta property="og:type" content="music.musician" />
-  <meta property="og:image" content="og-image.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mclearn-songs.mclearn2025.workers.dev/" />
+  <meta property="og:site_name" content="McLearn Media" />
+  <meta property="og:image" content="https://mclearn-songs.mclearn2025.workers.dev/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta property="og:title" content="New songs from McLearn Media" />
   <meta property="og:description" content="Featuring MP and Michael McLaurin. Southern soul, gospel blues, trap-soul. One-stop clearance." />
   <meta name="theme-color" content="#8A3A1A" />
@@ -187,10 +192,16 @@
     .prog i { display: block; height: 100%; width: 0; background: var(--gold); }
     .dock .play { width: 46px; height: 46px; }
 
+    .ttbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; padding: 12px 18px; background: var(--gold); color: var(--ink); font-weight: 700; font-size: 15px; text-align: center; }
+    .ttbar .ttgo { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); text-decoration: none; }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
 </head>
 <body>
+  <div class="ttbar" id="ttbar" hidden>
+    <span>From TikTok? Play every MP song free on the fan page.</span>
+    <a href="mp/" class="ttgo">Open the fan page &rarr;</a>
+  </div>
   <div class="wrap">
     <header>
       <div class="mark" aria-hidden="true">MP</div>
@@ -304,6 +315,14 @@
   <p class="sr" id="live" aria-live="polite"></p>
 
 <script>
+/* Visitors coming from TikTok (its in-app browser, or a link tagged ?from=tiktok) get a bar pointing to the fan page. */
+(() => {
+  try {
+    const ua = navigator.userAgent || "";
+    const fromTT = /musical_ly|BytedanceWebview|TikTok|trill/i.test(ua) || /[?&]from=tiktok\b/i.test(location.search) || /tiktok\.com/i.test(document.referrer);
+    if (fromTT) document.getElementById("ttbar").hidden = false;
+  } catch {}
+})();
 (() => {
   "use strict";
   /* ----------------------------------------------------------------
