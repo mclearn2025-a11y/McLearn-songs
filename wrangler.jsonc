@@ -10,8 +10,8 @@
     "run_worker_first": ["/api/*", "/new", "/new/", "/tiktok", "/tiktok/", "/mp", "/mp/"],
     "html_handling": "auto-trailing-slash"
   },
-  // Fan wall storage. No ID needed: on deploy, Wrangler 4.45+ creates the
-  // namespace and links it to this Worker automatically.
-  "kv_namespaces": [ { "binding": "FANS" } ],
+  // Fan wall storage: comments, news and email sign-ups (namespace "mclearn-songs-fans").
+  // Pinned by ID so the data stays the same whatever the Worker is named.
+  "kv_namespaces": [ { "binding": "FANS", "id": "dc0dcf21303340e28ea00105281ddffb" } ],
   "observability": { "enabled": true }
 }
