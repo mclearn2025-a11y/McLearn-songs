@@ -189,10 +189,10 @@ async function handle(request, env) {
    Add a new entry here to start a fresh campaign without changing the page. */
 const CAMPAIGNS = {
   "/new": {
-    title: "New Music from McLearn Media · 10 Songs Out Now",
-    description: "Tap to listen free: southern soul from MP, out of Brandon, Mississippi. 10 new songs, plus news and the fan wall.",
+    title: "New Music from McLearn Media · 12 Songs Out Now",
+    description: "Tap to listen free: southern soul from MP, out of Brandon, Mississippi. 12 songs out now, featuring the new Who Got Your Back (Flow Mix, Remastered). Plus news and the fan wall.",
     image: "/mp/og-new.png",
-    alt: "New music from McLearn Media: 10 new songs from MP, out now, free to listen",
+    alt: "New music from McLearn Media: 12 songs from MP, out now, free to listen",
   },
   "/tiktok": {
     title: "MP · Hear the full songs from TikTok",

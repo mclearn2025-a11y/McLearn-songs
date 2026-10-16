@@ -95,10 +95,14 @@
   ];
 
   const PICK_POST = "10 songs, 1 video \uD83C\uDFB6 Pause anytime and drag the bar to skip to your song. Which one is your favorite? Comment 1\u201310 \uD83D\uDC47\nFull songs on Spotify, Apple Music, YouTube Music, Amazon Music, TIDAL, Deezer, Pandora and TikTok. Search MP + the song title. Fan page: link in bio.\n#MP #SouthernSoul #NewMusic #SoulMusic #RnB #Mississippi #fyp";
-  const EXCLUSIVES = [["Who Got Your Back", "Flow Mix", "who-got-your-back-flow"], ["I See You", "Alternate Version", "i-see-you-alt"]];
-  const exPost = (t, ver, shape) => shape === "tiktok"
-    ? `"${t}" (${ver}) by MP \uD83C\uDFB6 A version you can only hear on the MP fan page. Link in bio.\n#MP #SouthernSoul #NewMusic #Exclusive`
-    : `"${t}" (${ver}) by MP \uD83C\uDFB6 A second recording you won't find on any streaming app. Hear it free on the MP fan page:\n${FAN}\n#MP #SouthernSoul #NewMusic`;
+  // New versions, out now on every app. The first one is the featured release.
+  const EXCLUSIVES = [["Who Got Your Back", "Flow Mix · Remastered", "who-got-your-back-flow", "Flow"], ["I See You", "Alternate Version", "i-see-you-alt", "Alternate"]];
+  const exPost = (t, ver, shape, q, feat) => {
+    const head = feat ? `\uD83D\uDC51 FEATURED RELEASE: "${t}" (${ver}) by MP` : `New version: "${t}" (${ver}) by MP`;
+    return shape === "tiktok"
+      ? `${head} \uD83C\uDFB6 Out now on every streaming app. Search "MP ${t} ${q}". Link in bio.\n#MP #SouthernSoul #NewMusic #fyp`
+      : `${head} \uD83C\uDFB6 Out now on Spotify, Apple Music, YouTube Music, Amazon and every streaming app. Search "MP ${t} ${q}", or hear it free on the fan page:\n${FAN}\n#MP #SouthernSoul #NewMusic`;
+  };
   const tabs = document.getElementById("tabs"), panel = document.getElementById("panel");
   let current = "tiktok";
   try { current = localStorage.getItem("mpKitTab") || current; } catch {}
@@ -142,9 +146,9 @@
     list.appendChild(row("All 10 songs", "7:30 · opening tracklist and closing card", `all/${s.all}`, s.allPost(), true));
     SONGS.forEach(([t, slug, g]) => list.appendChild(row(t, g + " · 0:45", `${s.dir}/mp-${slug}-${s.suffix}.mp4`, s.post(t))));
     const h = document.createElement("p"); h.className = "where"; h.style.marginTop = "18px";
-    h.innerHTML = "<strong>Fan page exclusives.</strong> Second recordings that are only on the MP fan page, not on streaming apps. Their post text sends people to the fan page.";
+    h.innerHTML = "<strong>New versions, out now.</strong> Two more recordings, on every streaming app. Post the featured release first.";
     list.appendChild(h);
-    EXCLUSIVES.forEach(([t, ver, slug]) => list.appendChild(row(`${t} (${ver})`, "Fan page exclusive · 0:45", `${s.dir}/mp-${slug}-${s.suffix}.mp4`, exPost(t, ver, s.id))));
+    EXCLUSIVES.forEach(([t, ver, slug, q], i) => list.appendChild(row(`${t} (${ver})`, (i === 0 ? "Featured release" : "Out now") + " · 0:45", `${s.dir}/mp-${slug}-${s.suffix}.mp4`, exPost(t, ver, s.id, q, i === 0))));
     panel.appendChild(list);
   }
   render();

@@ -229,7 +229,7 @@
     <section aria-labelledby="listen">
       <h2 id="listen">Listen · 45-second snippets</h2>
       <div id="tracks"></div>
-      <p class="note"><strong>Alt mix</strong> marks a second recording of the same song &mdash; a different performance, not a different work. Supervisors who want a particular feel can pick between them.<br /><br />These are 45-second excerpts for review. Full-length masters and WAV files are available to programmers and supervisors on request.</p>
+      <p class="note"><strong>Who Got Your Back</strong> and <strong>I See You</strong> each come in two recordings &mdash; different performances of the same work, all released. The Flow mix (remastered) is the featured release. Supervisors who want a particular feel can pick between them.<br /><br />These are 45-second excerpts for review. Full-length masters and WAV files are available to programmers and supervisors on request.</p>
     </section>
 
     <section aria-labelledby="about">
@@ -242,8 +242,8 @@
           license starts and ends in one room.
         </p>
         <p>
-          The catalog runs across southern soul, gospel blues, slow ballads and trap-soul. Ten titles released this
-          October, all out now. More are finished or in the chair.
+          The catalog runs across southern soul, gospel blues, slow ballads and trap-soul. Twelve recordings released this
+          October, all out now on every major platform. More are finished or in the chair.
         </p>
         <dl class="facts">
           <div class="fact"><dt>Artist</dt><dd>MP</dd></div>
@@ -251,7 +251,7 @@
           <div class="fact"><dt>Writer</dt><dd>Michael Shun McLaurin</dd></div>
           <div class="fact"><dt>PRO</dt><dd>BMI</dd></div>
           <div class="fact"><dt>Based</dt><dd>Brandon, MS</dd></div>
-          <div class="fact"><dt>October releases</dt><dd>10 titles</dd></div>
+          <div class="fact"><dt>October releases</dt><dd>12 songs</dd></div>
         </dl>
         <div class="cta">
           <a class="btn btn-a" href="mailto:Mclearn2025@gmail.com?subject=MP%20%E2%80%94%20music%20inquiry">Email McLearn Media</a>
@@ -346,14 +346,14 @@
   };
 
   const TRACKS = [
+    { t:"Who Got Your Back",  g:"Flow mix · Remastered · 5:01", w:"now", d:"Featured", q:"Who Got Your Back Flow", f:"audio/who-got-your-back-flow.mp3" },
     { t:"These Regrets",      g:"Southern Soul · 4:10",  w:"now",  d:"Out now", f:"audio/these-regrets.mp3" },
     { t:"Who Got Your Back",  g:"Soul / Rap · 4:46",     w:"now",  d:"Out now", f:"audio/who-got-your-back.mp3" },
-    { t:"Who Got Your Back",  g:"Flow mix · 5:01",       w:"alt",  d:"Alt mix", f:"audio/who-got-your-back-flow.mp3" },
     { t:"Can I?",             g:"Southern Soul · 6:27",  w:"now",  d:"Out now", f:"audio/can-i.mp3" },
     { t:"Rain and You",       g:"Slow Ballad · 4:22",    w:"now",  d:"Out now", f:"audio/rain-and-you.mp3" },
     { t:"TEA",                g:"Slow Jam · 3:06",       w:"now",  d:"Out now", f:"audio/tea.mp3" },
     { t:"I See You",          g:"Southern Soul · 4:20",  w:"now",  d:"Out now", f:"audio/i-see-you.mp3" },
-    { t:"I See You",          g:"Alternate version · 4:08", w:"alt", d:"Alt mix", f:"audio/i-see-you-alt.mp3" },
+    { t:"I See You",          g:"Alternate version · 4:08", w:"now", d:"Out now", q:"I See You Alternate", f:"audio/i-see-you-alt.mp3" },
     { t:"Who Am I",           g:"Slow Ballad · 3:19",    w:"now",  d:"Out now", f:"audio/who-am-i.mp3" },
     { t:"Hey You",            g:"Rhythm & Soul · 3:02",  w:"now",  d:"Out now", f:"audio/hey-you.mp3" },
     { t:"I Can't Tell",       g:"Southern Soul · 3:27",  w:"now",  d:"Out now", f:"audio/i-cant-tell.mp3" },
@@ -422,7 +422,7 @@
 
     // One streaming button per released song (not on alt mixes or unreleased titles).
     if (tr.w === 'now') {
-      const url = (LINKS[tr.t] || '').trim();
+      const url = tr.q ? '' : (LINKS[tr.t] || '').trim();
       const a = document.createElement('a');
       a.className = 'stream';
       a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm-2 13V8l6 4-6 4z"/></svg><span></span>';
@@ -434,7 +434,7 @@
       } else {
         a.href = '#';
         a.setAttribute('aria-haspopup', 'dialog');
-        a.addEventListener('click', (e) => { e.preventDefault(); openSheet(tr.t, a); });
+        a.addEventListener('click', (e) => { e.preventDefault(); openSheet(tr.q || tr.t, a); });
       }
       root.appendChild(a);
     }

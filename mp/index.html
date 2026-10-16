@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>MP · Official Fan Page</title>
-  <meta name="description" content="MP: southern soul out of Brandon, Mississippi. Hear every song free, get two versions you won't find on any app, and get new music first." />
+  <meta name="description" content="MP: southern soul out of Brandon, Mississippi. Hear all 12 songs free, out now on every music app, and get new music first." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mclearn-songs.mclearn2025.workers.dev/mp/" />
   <meta property="og:site_name" content="McLearn Media" />
@@ -15,7 +15,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="canonical" href="https://mclearn-songs.mclearn2025.workers.dev/mp/" />
   <meta property="og:title" content="MP · Official Fan Page" />
-  <meta property="og:description" content="Hear every song free, get two versions you won't find on any app, and get new music first." />
+  <meta property="og:description" content="Hear all 12 songs free, out now on every music app, and get new music first." />
   <meta name="theme-color" content="#15100C" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238A3A1A'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23FAF1E5'%3EMP%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* Layout: one column, phone first. Who MP is → newest song with a big Play → join the list →
-       all songs (scannable rows) → fan-page-only versions explained → find MP elsewhere → news → fan wall.
+       all songs (scannable rows) → find MP elsewhere → news → fan wall.
        Contrast: every text/background pair is 4.5:1 or better (button fill darkened to #A8471F for 5.2:1). */
     :root {
       --ink: #15100C; --ink-2: #1E1813; --ink-3: #2A2119; --line: #4A3C2F;
@@ -89,6 +89,11 @@
     .f-title { font-family: var(--serif); font-size: clamp(2rem, 9vw, 2.8rem); font-weight: 600; line-height: 1.05; }
     .f-meta { color: var(--muted); font-size: 15px; }
     .bigplay { min-height: 58px; font-size: 18px; padding-inline: 26px; }
+    .f-head { display: grid; grid-template-columns: 120px minmax(0,1fr); gap: 16px; align-items: center; }
+    .f-cover { width: 120px; height: 120px; border-radius: 12px; object-fit: cover; box-shadow: 0 6px 18px rgba(0,0,0,.45); }
+    .f-text { display: grid; gap: 6px; min-width: 0; }
+    .f-ver { color: var(--gold); font-weight: 700; font-size: 15px; }
+    @media (max-width: 380px) { .f-head { grid-template-columns: 96px minmax(0,1fr); } .f-cover { width: 96px; height: 96px; } }
 
     /* join */
     .card { padding: 20px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--ink-2); display: grid; gap: 12px; }
@@ -199,16 +204,22 @@
       <p class="who">Southern soul, slow jams and trap-soul from <em>Brandon, Mississippi</em>. Songs by Michael Shun McLaurin, released by McLearn Media.</p>
       <ul class="cando" aria-label="What you can do here">
         <li>Hear a free preview of every song, no account needed</li>
-        <li>Hear two versions you won't find on any app</li>
+        <li>All 12 songs are out now on every music app</li>
         <li>Get new music first by email</li>
       </ul>
     </header>
 
     <main>
       <section class="feature" aria-labelledby="fTitle" id="feature">
-        <span class="badge new">Newest release</span>
-        <h2 class="sr">Newest release</h2>
-        <p class="f-title" id="fTitle">—</p>
+        <div class="f-head">
+          <img class="f-cover" id="fCover" src="cover-who-got-your-back-flow.jpg" width="120" height="120" alt="Cover art: a gold crown and a white lily on dark wood" />
+          <div class="f-text">
+            <span class="badge new">Featured release</span>
+            <h2 class="sr">Featured release</h2>
+            <p class="f-title" id="fTitle">—</p>
+            <p class="f-ver" id="fVer">—</p>
+          </div>
+        </div>
         <p class="f-meta" id="fMeta">—</p>
         <div class="row">
           <button class="btn btn-a bigplay" type="button" id="fPlay"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="fIcon" d="M8 5v14l11-7z"/></svg><span id="fPlayTxt">Play preview</span></button>
@@ -222,7 +233,7 @@
           <h3>Join the MP email list</h3>
           <ul class="gets">
             <li>An email the day each new song comes out</li>
-            <li>First listen to new fan-page-only versions</li>
+            <li>First listen to new versions and remasters</li>
             <li>No more than 2 emails a month. Leave anytime.</li>
           </ul>
           <div class="inline">
@@ -240,15 +251,7 @@
         <h2 id="songs" tabindex="-1">All songs</h2>
         <p class="hint">Tap ▶ for a free 45-second preview. Tap <strong>Full song</strong> to play the whole song on your music app.</p>
         <div class="row" style="margin-bottom:14px"><button class="btn btn-a" type="button" id="playAll"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Play all 12 previews</button></div>
-        <ul class="tracks" id="tracks" aria-label="Songs on all music apps"></ul>
-
-        <div class="explain" id="only">
-          <span class="badge only">Fan page only</span>
-          <h3>What "fan page only" means</h3>
-          <p>These are <strong>second recordings</strong> of two MP songs. They are <strong>not on Spotify, Apple Music or any other app</strong>. This page is the only place to hear them.</p>
-          <p><strong>How to get access:</strong> nothing to pay and no account. Tap ▶ below to hear the preview. <a href="#join">Join the email list</a> to hear first if the full versions are released.</p>
-        </div>
-        <ul class="tracks" id="exTracks" aria-label="Fan page only versions" style="margin-top:12px"></ul>
+        <ul class="tracks" id="tracks" aria-label="All 12 songs, out now on every music app"></ul>
       </section>
 
       <section aria-labelledby="findH">
@@ -344,8 +347,10 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
 
-  /* ---- Songs. The first song is shown as "Newest release". Lengths are the full songs. ---- */
+  /* ---- Songs. The first song is the "Featured release". Lengths are the full songs.
+     alt: a second version of a song; its word is added to searches so the right version comes up. */
   const SONGS = [
+    { t: "Who Got Your Back", v: "Flow Mix · Remastered", len: "5:01", f: "/audio/who-got-your-back-flow.mp3", alt: "Flow" },
     { t: "Thank You",         v: "Trap-Soul Duet",    len: "4:02", f: "/audio/thank-you-remix.mp3" },
     { t: "These Regrets",     v: "Southern Soul",     len: "4:10", f: "/audio/these-regrets.mp3" },
     { t: "Who Got Your Back", v: "Soul / Rap",        len: "4:46", f: "/audio/who-got-your-back.mp3" },
@@ -353,12 +358,10 @@
     { t: "Rain and You",      v: "Slow Ballad",       len: "4:22", f: "/audio/rain-and-you.mp3" },
     { t: "TEA",               v: "Slow Jam",          len: "3:06", f: "/audio/tea.mp3" },
     { t: "I See You",         v: "Southern Soul",     len: "4:20", f: "/audio/i-see-you.mp3" },
+    { t: "I See You",         v: "Alternate Version", len: "4:08", f: "/audio/i-see-you-alt.mp3", alt: "Alternate" },
     { t: "Who Am I",          v: "Slow Ballad",       len: "3:19", f: "/audio/who-am-i.mp3" },
     { t: "Hey You",           v: "Rhythm & Soul",     len: "3:02", f: "/audio/hey-you.mp3" },
-    { t: "I Can't Tell",      v: "Southern Soul",     len: "3:27", f: "/audio/i-cant-tell.mp3" },
-    // Fan page only: second recordings, not on any app.
-    { t: "Who Got Your Back", v: "Flow Mix",          len: "5:01", f: "/audio/who-got-your-back-flow.mp3", x: true },
-    { t: "I See You",         v: "Alternate Version", len: "4:08", f: "/audio/i-see-you-alt.mp3",          x: true }
+    { t: "I Can't Tell",      v: "Southern Soul",     len: "3:27", f: "/audio/i-cant-tell.mp3" }
   ];
   const PREVIEW = "0:45";
   const PLATFORMS = [
@@ -391,7 +394,7 @@
   const PLAY = "M8 5v14l11-7z", PAUSE = "M6 19h4V5H6zm8-14v14h4V5z";
   const audio = new Audio(); audio.preload = "none";
   let current = -1;
-  const label = (s) => s.t + (s.x ? " (" + s.v + ")" : "");
+  const label = (s) => s.t + (s.alt ? " (" + s.v + ")" : "");
   const say = (m) => { $("live").textContent = ""; setTimeout(() => { $("live").textContent = m; }, 30); };
 
   function buildRow(s, i) {
@@ -405,27 +408,26 @@
     li.querySelector(".t-ver").textContent = s.v;
     li.querySelector(".len").textContent = "Preview " + PREVIEW + " · Full song " + s.len;
     const b = li.querySelector(".badge");
-    b.className = "badge " + (s.x ? "only" : "apps"); b.textContent = s.x ? "Fan page only" : "On all apps";
+    b.className = "badge apps"; b.textContent = i === 0 ? "Featured · On all apps" : "On all apps";
     const pb = li.querySelector(".play");
     pb.setAttribute("aria-label", "Play preview of " + label(s));
     pb.addEventListener("click", () => select(i));
-    if (!s.x) {
-      const full = document.createElement("button");
-      full.type = "button"; full.className = "full"; full.textContent = "Full song";
-      full.setAttribute("aria-label", "Play the full song " + s.t + " on a music app");
-      full.addEventListener("click", (e) => openSheet(s.t, e.currentTarget));
-      li.querySelector(".t-meta").appendChild(full);
-    }
+    const full = document.createElement("button");
+    full.type = "button"; full.className = "full"; full.textContent = "Full song";
+    full.setAttribute("aria-label", "Play the full song " + label(s) + " on a music app");
+    full.addEventListener("click", (e) => openSheet(s, e.currentTarget));
+    li.querySelector(".t-meta").appendChild(full);
     return li;
   }
-  SONGS.forEach((s, i) => (s.x ? $("exTracks") : $("tracks")).appendChild(buildRow(s, i)));
+  SONGS.forEach((s, i) => $("tracks").appendChild(buildRow(s, i)));
 
-  // newest release card
+  // featured release card
   const NEW = 0;
   $("fTitle").textContent = SONGS[NEW].t;
-  $("fMeta").textContent = SONGS[NEW].v + " · Full song " + SONGS[NEW].len + " · Free preview " + PREVIEW + " · On all apps";
+  $("fVer").textContent = SONGS[NEW].v;
+  $("fMeta").textContent = "Full song " + SONGS[NEW].len + " · Free preview " + PREVIEW + " · Out now on every music app";
   $("fPlay").addEventListener("click", () => select(NEW));
-  $("fFull").addEventListener("click", (e) => openSheet(SONGS[NEW].t, e.currentTarget));
+  $("fFull").addEventListener("click", (e) => openSheet(SONGS[NEW], e.currentTarget));
 
   function paint() {
     document.querySelectorAll(".track[data-i]").forEach((row) => {
@@ -506,21 +508,22 @@
   const open = (d) => (typeof d.showModal === "function" ? d.showModal() : d.setAttribute("open", ""));
   const shut = (d) => (typeof d.close === "function" ? d.close() : d.removeAttribute("open"));
   let opener = null;
-  function openSheet(title, from) {
+  function openSheet(song, from) {
     opener = from;
-    $("sheetT").textContent = title + " · MP";
-    const smart = (SMART[title] || "").trim(), tt = (TIKTOK[title] || "").trim();
+    const title = song.t, q = "MP " + song.t + (song.alt ? " " + song.alt : "");
+    $("sheetT").textContent = label(song) + " · MP";
+    const smart = song.alt ? "" : (SMART[title] || "").trim(), tt = (TIKTOK[title] || "").trim();
     $("smartBtn").hidden = !smart; if (smart) $("smartBtn").href = smart;
     $("ttNote").hidden = !!tt;
     const p = $("plats"); p.textContent = "";
     PLATFORMS.forEach(([name, make]) => {
       const a = document.createElement("a");
-      a.className = "plat"; a.href = (name === "TikTok" && tt) ? tt : make("MP " + title); a.target = "_blank"; a.rel = "noopener";
+      a.className = "plat"; a.href = (name === "TikTok" && tt && !song.alt) ? tt : make(q); a.target = "_blank"; a.rel = "noopener";
       a.innerHTML = "<span></span><span aria-hidden=\"true\">↗</span>"; a.firstChild.textContent = name;
       a.setAttribute("aria-label", "Find " + title + " by MP on " + name + " (opens in a new tab)");
       p.appendChild(a);
     });
-    $("copyName").textContent = "Copy song name"; $("copyName").dataset.q = "MP " + title;
+    $("copyName").textContent = "Copy song name"; $("copyName").dataset.q = q;
     open($("sheet")); (smart ? $("smartBtn") : p.firstChild).focus();
   }
   $("sheetX").addEventListener("click", () => shut($("sheet")));
