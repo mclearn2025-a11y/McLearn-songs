@@ -34,6 +34,16 @@ on every push to `main`, using `wrangler.jsonc`.
 - The password stays signed in only until the browser tab closes.
 - Fans can't post links, and each visitor can post once a minute.
 
+### Fan vote ("You pick what's next")
+- The question and its three choices are at the top of `worker.js`, in `POLL`.
+- To start a fresh vote, change the `id` (for example `next-2`) and the choices. Old votes
+  stay stored under the old id, so the new vote starts at zero.
+- One vote per phone or computer. Fans can change their vote. Totals show after a fan votes.
+
+### Dedication cards ("For the one who stayed")
+- Fans write a card for someone, then send it, save it as a picture (sized for Facebook and
+  Instagram), or post it on the fan wall. Cards aren't stored unless posted to the wall.
+
 ### Adding a new song
 Put the 45-second clip in `audio/`, then add it to the top of the `SONGS`
 list in `mp/index.html` and to `TRACKS` in `index.html`.

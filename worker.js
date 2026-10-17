@@ -13,6 +13,20 @@ const LIMITS = {
   cooldown: 60,      // seconds between posts from one visitor (KV minimum is 60)
 };
 
+/* Fan vote: "What should MP share next?"
+   To start a new vote, give it a new id (old votes stay stored under the old id) and new choices.
+   Each phone or computer gets one vote and can change it. */
+const POLL = {
+  id: "next-1",
+  question: "What should MP share next?",
+  choices: [
+    { k: "story",   t: "The story behind “Who Got Your Back”" },
+    { k: "version", t: "A new version of a fan favorite" },
+    { k: "preview", t: "A first listen to the next new song" },
+  ],
+};
+const DEVICE = /^[a-z0-9-]{16,40}$/;
+
 // Newest first: KV lists keys in ascending order, so store an inverted timestamp.
 const sortKey = (ts) => String(9999999999999 - ts).padStart(13, "0");
 const rid = () => crypto.randomUUID().slice(0, 8);
@@ -77,6 +91,35 @@ async function cooldown(env, request, bucket) {
   return false;
 }
 
+// The device id is scrambled before it's stored, so the stored key can't be traced back to a browser.
+const voteKey = async (device) => `v:${POLL.id}:${(await sha256("mp-vote:" + device)).slice(0, 32)}`;
+
+async function pollState(env, device, justVoted) {
+  const counts = Object.fromEntries(POLL.choices.map((c) => [c.k, 0]));
+  const myKey = device ? await voteKey(device) : "";
+  let cursor, pages = 0, listed = null;
+  do {
+    const page = await env.FANS.list({ prefix: `v:${POLL.id}:`, cursor });
+    for (const k of page.keys) {
+      if (!k.metadata || !(k.metadata.c in counts)) continue;
+      counts[k.metadata.c]++;
+      if (k.name === myKey) listed = k.metadata.c;
+    }
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor && ++pages < 25);
+  // KV lists can lag a few seconds behind a write. Make a fresh or changed vote show in its own result.
+  if (justVoted && listed !== justVoted) {
+    if (listed) counts[listed]--;
+    counts[justVoted]++;
+  }
+  const mine = justVoted || (myKey ? await env.FANS.get(myKey) : null);
+  return {
+    id: POLL.id, question: POLL.question, mine,
+    total: Object.values(counts).reduce((a, b) => a + b, 0),
+    choices: POLL.choices.map((c) => ({ ...c, n: counts[c.k] })),
+  };
+}
+
 async function handle(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, "");
@@ -109,6 +152,26 @@ async function handle(request, env) {
     const meta = { name, text, ts };
     await env.FANS.put(`c:${id}`, "", { metadata: meta });
     return json({ ok: true, comment: { id, ...meta } }, 201);
+  }
+
+  // --- fan vote --------------------------------------------------------------
+  if (path === "/api/poll" && method === "GET") {
+    const device = (url.searchParams.get("d") || "").toLowerCase();
+    return json(await pollState(env, DEVICE.test(device) ? device : ""));
+  }
+  if (path === "/api/vote" && method === "POST") {
+    const body = await readBody(request);
+    if (!body) return fail(400, "Something went wrong. Try again.");
+    const device = String(body.device || "").toLowerCase();
+    const choice = String(body.choice || "");
+    if (body.poll !== POLL.id) return fail(409, "This vote has closed. Refresh the page to see the new one.");
+    if (!DEVICE.test(device) || !POLL.choices.some((c) => c.k === choice)) return fail(400, "Something went wrong. Try again.");
+    const key = await voteKey(device);
+    const had = await env.FANS.get(key);
+    // A new vote is limited to one a minute from the same connection; changing a vote is not.
+    if (had === null && (await cooldown(env, request, "v"))) return fail(429, "A vote just came from this connection. Give it a minute.");
+    await env.FANS.put(key, choice, { metadata: { c: choice, ts: Date.now() } });
+    return json(await pollState(env, device, choice), 201);
   }
 
   // --- email sign-up --------------------------------------------------------

@@ -164,6 +164,39 @@
     .x { margin-left: auto; color: var(--bad); font-size: 14px; font-weight: 700; min-height: 44px; padding: 4px 10px; border-radius: 8px; }
     .admin { border: 2px solid var(--gold); margin-bottom: 14px; }
 
+    /* fan vote */
+    .vote { display: grid; gap: 10px; }
+    .choice {
+      position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center;
+      width: 100%; min-height: 58px; padding: 14px 16px; border: 1.5px solid var(--line); border-radius: var(--r);
+      background: var(--ink); color: var(--paper); text-align: left; font-weight: 600;
+    }
+    .choice:hover { border-color: var(--gold); }
+    .choice[aria-pressed="true"] { border: 2px solid var(--gold); }
+    .choice .bar { position: absolute; inset: 0 auto 0 0; width: 0; background: rgba(228,180,88,.16); transition: width .5s ease; }
+    .choice[aria-pressed="true"] .bar { background: rgba(228,180,88,.28); }
+    .choice .c-t, .choice .c-n { position: relative; }
+    .choice .c-n { color: var(--gold); font-variant-numeric: tabular-nums; font-weight: 700; }
+    .choice .c-t::after { content: ""; }
+    .choice[aria-pressed="true"] .c-t::after { content: "  ✓ your vote"; color: var(--gold); font-size: 14px; }
+
+    /* dedication */
+    .ded-card {
+      position: relative; overflow: hidden; display: grid; gap: 10px; padding: 24px 22px 20px; border-radius: var(--r-lg);
+      background: radial-gradient(520px 300px at 85% -10%, rgba(196,93,52,.45), transparent 65%), #1A1410;
+      border: 1.5px solid var(--gold);
+    }
+    .ded-top { display: flex; align-items: center; gap: 12px; }
+    .ded-top img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex: none; }
+    .ded-card .ded-song { color: var(--muted); font-size: 14px; line-height: 1.35; }
+    .ded-song strong { color: var(--paper); display: block; font-family: var(--serif); font-size: 17px; font-weight: 600; }
+    .ded-card .ded-to { font-family: var(--serif); font-size: clamp(1.7rem, 7vw, 2.3rem); font-weight: 600; line-height: 1.1; color: var(--gold); overflow-wrap: anywhere; }
+    .ded-card .ded-msg { color: var(--paper); font-family: var(--serif); font-size: 19px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .ded-card .ded-from { color: var(--muted); font-size: 15px; overflow-wrap: anywhere; }
+    .ded-card .ded-foot { margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; letter-spacing: .06em; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 460px) { .two { grid-template-columns: 1fr; } }
+
     footer { margin-top: 50px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: grid; gap: 6px; text-align: center; }
     footer .tag { color: var(--gold); font-family: var(--serif); font-size: 20px; }
 
@@ -252,6 +285,49 @@
         <p class="hint">Tap ▶ for a free 45-second preview. Tap <strong>Full song</strong> to play the whole song on your music app.</p>
         <div class="row" style="margin-bottom:14px"><button class="btn btn-a" type="button" id="playAll"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Play all 12 previews</button></div>
         <ul class="tracks" id="tracks" aria-label="All 12 songs, out now on every music app"></ul>
+      </section>
+
+      <section aria-labelledby="voteH" id="voteSec">
+        <h2 id="voteH">You pick what's next</h2>
+        <div class="card">
+          <h3 id="voteQ">What should MP share next?</h3>
+          <p id="voteHelp">Tap one. You'll see how other fans voted. You can change your vote anytime.</p>
+          <div class="vote" id="voteList" role="group" aria-labelledby="voteQ"></div>
+          <p class="msg" id="voteMsg" role="status" aria-live="polite"></p>
+          <p class="fine">One vote per phone or computer. MP reads every result and makes the final call.</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="dedH" id="dedicate">
+        <h2 id="dedH">For the one who stayed</h2>
+        <p class="hint">“Who Got Your Back” is for the people who showed up. Make a card for yours, then send it to them or share it.</p>
+        <div class="card">
+          <div class="two">
+            <label class="f" for="dTo">Who's it for?<input type="text" id="dTo" maxlength="40" placeholder="Mama, Big Bro, Keisha…" autocomplete="off" /></label>
+            <label class="f" for="dFrom">From (optional)<input type="text" id="dFrom" maxlength="40" placeholder="Your name" autocomplete="nickname" /></label>
+          </div>
+          <label class="f" for="dMsg">Your message<textarea id="dMsg" maxlength="240" placeholder="You were there when nobody else was. This one's for you." aria-describedby="dCount"></textarea></label>
+          <span class="count" id="dCount">0 / 240</span>
+
+          <figure class="ded-card" id="dCard" aria-label="Your dedication card">
+            <div class="ded-top">
+              <img src="cover-who-got-your-back-flow.jpg" alt="" width="56" height="56" />
+              <p class="ded-song"><strong>Who Got Your Back</strong>MP · Flow Mix</p>
+            </div>
+            <p class="ded-to" id="dToOut">For the one who stayed.</p>
+            <p class="ded-msg" id="dMsgOut">You were there when nobody else was. This one's for you.</p>
+            <p class="ded-from" id="dFromOut" hidden></p>
+            <p class="ded-foot">McLEARN MEDIA · HEAR IT FREE AT THE MP FAN PAGE</p>
+          </figure>
+
+          <div class="row">
+            <button class="btn btn-a" type="button" id="dShare">Send this card</button>
+            <button class="btn btn-b" type="button" id="dSave">Save as picture</button>
+            <button class="btn btn-b" type="button" id="dWall">Post it on the fan wall</button>
+          </div>
+          <p class="msg" id="dStatus" role="status" aria-live="polite"></p>
+          <p class="fine">Your card is made on your phone and isn't saved by us. Only "Post it on the fan wall" makes it public.</p>
+        </div>
       </section>
 
       <section aria-labelledby="findH">
@@ -689,8 +765,171 @@
     } catch (err) { msg($("uMsg"), err.message, false); }
   });
 
+  /* ---- Fan vote ------------------------------------------------------------------------------ */
+  // A random id kept on this device, so a fan can change their vote. Not linked to any name or email.
+  let device = "";
+  try { device = localStorage.getItem("mpDevice") || ""; } catch {}
+  if (!/^[a-z0-9-]{16,40}$/.test(device)) {
+    device = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2, 14)).toLowerCase();
+    try { localStorage.setItem("mpDevice", device); } catch {}
+  }
+  let poll = null, voting = false;
+  function drawPoll() {
+    const box = $("voteList"); box.textContent = "";
+    if (!poll) { box.appendChild(empty("The vote couldn't load right now. Try again in a minute.")); return; }
+    $("voteQ").textContent = poll.question;
+    const shown = !!poll.mine, total = poll.total || 0;
+    poll.choices.forEach((c) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "choice"; b.disabled = voting;
+      b.setAttribute("aria-pressed", poll.mine === c.k ? "true" : "false");
+      const pct = total ? Math.round(c.n / total * 100) : 0;
+      b.innerHTML = '<span class="bar"></span><span class="c-t"></span><span class="c-n"></span>';
+      b.querySelector(".c-t").textContent = c.t;
+      if (shown) {
+        b.querySelector(".c-n").textContent = pct + "%";
+        b.querySelector(".bar").style.width = pct + "%";
+        b.setAttribute("aria-label", c.t + ", " + pct + " percent" + (poll.mine === c.k ? ", your vote" : ""));
+      }
+      b.addEventListener("click", () => vote(c.k));
+      box.appendChild(b);
+    });
+    $("voteHelp").textContent = shown
+      ? total + (total === 1 ? " fan has" : " fans have") + " voted so far. Tap another choice to change your vote."
+      : "Tap one. You'll see how other fans voted. You can change your vote anytime.";
+  }
+  async function loadPoll() {
+    try { poll = await api("/api/poll?d=" + encodeURIComponent(device)); } catch { poll = null; }
+    drawPoll();
+  }
+  async function vote(k) {
+    if (voting || !poll || poll.mine === k) return;
+    voting = true; drawPoll(); $("voteMsg").textContent = "";
+    try {
+      poll = await api("/api/vote", { method: "POST", body: { poll: poll.id, choice: k, device } });
+      msg($("voteMsg"), "Got it. Thanks for voting.", true);
+    } catch (err) {
+      msg($("voteMsg"), err.message, false);
+      if (err.status === 409) loadPoll();
+    } finally { voting = false; drawPoll(); }
+  }
+
+  /* ---- Dedication card ------------------------------------------------------------------------ */
+  const D_MSG = "You were there when nobody else was. This one's for you.";
+  const fanPage = location.origin + "/mp/";
+  try { $("dFrom").value = localStorage.getItem("mpName") || ""; } catch {}
+  function ded() {
+    return { to: $("dTo").value.trim(), from: $("dFrom").value.trim(), text: $("dMsg").value.trim() || D_MSG };
+  }
+  function drawDed() {
+    const d = ded();
+    $("dToOut").textContent = d.to ? "For " + d.to + "." : "For the one who stayed.";
+    $("dMsgOut").textContent = d.text;
+    $("dFromOut").hidden = !d.from; $("dFromOut").textContent = d.from ? "— " + d.from : "";
+    $("dCount").textContent = $("dMsg").value.length + " / 240";
+  }
+  ["dTo", "dFrom", "dMsg"].forEach((id) => $(id).addEventListener("input", drawDed));
+  const dedText = (d) => (d.to ? "For " + d.to + ": " : "") + d.text + (d.from ? " — " + d.from : "") +
+    "\n\n🎵 Who Got Your Back by MP. Hear it free: " + fanPage;
+
+  // Draws the card as a 1080×1350 picture (the size Facebook and Instagram show best).
+  function loadImg(src) { return new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; }); }
+  function wrap(ctx, text, maxW) {
+    const out = [];
+    text.split("\n").forEach((para) => {
+      let line = "";
+      para.split(/\s+/).forEach((w) => {
+        const t = line ? line + " " + w : w;
+        if (ctx.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t;
+      });
+      out.push(line);
+    });
+    return out;
+  }
+  async function cardPicture() {
+    const d = ded(), W = 1080, H = 1350, pad = 96;
+    try { await Promise.all([document.fonts.load('600 80px "Fraunces"'), document.fonts.load('500 40px "Fraunces"'), document.fonts.load('600 30px "Hanken Grotesk"')]); } catch {}
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    x.fillStyle = "#15100C"; x.fillRect(0, 0, W, H);
+    const g = x.createRadialGradient(W * .82, -40, 20, W * .82, -40, 900);
+    g.addColorStop(0, "rgba(196,93,52,.55)"); g.addColorStop(1, "rgba(196,93,52,0)");
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.strokeStyle = "#E4B458"; x.lineWidth = 4; x.strokeRect(36, 36, W - 72, H - 72);
+    const cover = await loadImg("cover-who-got-your-back-flow.jpg");
+    if (cover) {
+      x.save(); x.beginPath();
+      if (x.roundRect) x.roundRect(pad, pad, 150, 150, 18); else x.rect(pad, pad, 150, 150);
+      x.clip(); x.drawImage(cover, pad, pad, 150, 150); x.restore();
+    }
+    x.textBaseline = "top";
+    x.fillStyle = "#FAF1E5"; x.font = '600 46px "Fraunces", Georgia, serif'; x.fillText("Who Got Your Back", pad + 180, pad + 30);
+    x.fillStyle = "#C9B6A1"; x.font = '500 32px "Hanken Grotesk", Arial, sans-serif'; x.fillText("MP · Flow Mix", pad + 180, pad + 92);
+    const maxW = W - pad * 2, top = 310, bottom = H - 260, toText = d.to ? "For " + d.to + "." : "For the one who stayed.";
+    let size = 92; x.font = '600 ' + size + 'px "Fraunces", Georgia, serif';
+    let toLines = wrap(x, toText, maxW);
+    if (toLines.length > 2) { size = 70; x.font = '600 ' + size + 'px "Fraunces", Georgia, serif'; toLines = wrap(x, toText, maxW); }
+    const toH = toLines.length * size * 1.12, fromH = d.from ? 66 : 0;
+    let ms = 48; x.font = '500 ' + ms + 'px "Fraunces", Georgia, serif';
+    let lines = wrap(x, d.text, maxW);
+    while (toH + 34 + lines.length * ms * 1.4 + fromH > bottom - top && ms > 32) { ms -= 4; x.font = '500 ' + ms + 'px "Fraunces", Georgia, serif'; lines = wrap(x, d.text, maxW); }
+    const blockH = toH + 34 + lines.length * ms * 1.4 + fromH;
+    let y = top + Math.max(0, (bottom - top - blockH) / 2);   // center the words between the song and the footer
+    x.font = '600 ' + size + 'px "Fraunces", Georgia, serif';
+    x.fillStyle = "#E4B458"; toLines.forEach((l) => { x.fillText(l, pad, y); y += size * 1.12; });
+    y += 34;
+    x.font = '500 ' + ms + 'px "Fraunces", Georgia, serif';
+    x.fillStyle = "#FAF1E5"; lines.forEach((l) => { x.fillText(l, pad, y); y += ms * 1.4; });
+    if (d.from) { y += 18; x.fillStyle = "#C9B6A1"; x.font = '500 40px "Hanken Grotesk", Arial, sans-serif'; x.fillText("— " + d.from, pad, y); }
+    x.fillStyle = "#4A3C2F"; x.fillRect(pad, H - 230, maxW, 2);
+    x.fillStyle = "#E8835A"; x.font = '700 28px "Hanken Grotesk", Arial, sans-serif'; x.fillText("HEAR IT FREE", pad, H - 196);
+    x.fillStyle = "#FAF1E5"; x.font = '600 34px "Hanken Grotesk", Arial, sans-serif'; x.fillText(fanPage.replace(/^https?:\/\//, ""), pad, H - 152);
+    x.fillStyle = "#E4B458"; x.font = '500 34px "Fraunces", Georgia, serif'; x.fillText("One Sound. Many Stories.", pad, H - 100);
+    return new Promise((res) => c.toBlob((b) => res(b), "image/png"));
+  }
+
+  $("dShare").addEventListener("click", async () => {
+    const d = ded(), text = dedText(d);
+    if (navigator.share) {
+      try { await navigator.share({ title: "For " + (d.to || "you"), text }); return msg($("dStatus"), "Sent. That's love.", true); }
+      catch (e) { if (e && e.name === "AbortError") return; }
+    }
+    try { await navigator.clipboard.writeText(text); msg($("dStatus"), "Copied. Paste it in a text or a post.", true); }
+    catch { msg($("dStatus"), "Your phone blocked copying. Use Save as picture instead.", false); }
+  });
+  $("dSave").addEventListener("click", async () => {
+    $("dSave").disabled = true; msg($("dStatus"), "Making your picture…", true);
+    try {
+      const blob = await cardPicture(); if (!blob) throw new Error();
+      const name = "for-" + ((ded().to || "you").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "you") + "-mp.png";
+      const file = new File([blob], name, { type: "image/png" });
+      if (matchMedia("(pointer: coarse)").matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], text: dedText(ded()) }); msg($("dStatus"), "Shared. Post it anywhere.", true); return; }
+        catch (e) { if (e && e.name === "AbortError") { $("dStatus").textContent = ""; return; } }
+      }
+      const url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      msg($("dStatus"), "Picture saved. Post it on Facebook, Instagram or TikTok.", true);
+    } catch { msg($("dStatus"), "That picture couldn't be made on this phone. Try Send this card instead.", false); }
+    finally { $("dSave").disabled = false; }
+  });
+  $("dWall").addEventListener("click", async () => {
+    const d = ded();
+    if (!d.to) { $("dTo").focus(); return msg($("dStatus"), "Add who it's for first.", false); }
+    $("dWall").disabled = true;
+    try {
+      const r = await api("/api/comments", { method: "POST", body: { name: d.from, text: "For " + d.to + ": " + d.text, website: "" } });
+      if (r.comment) comments.unshift(r.comment);
+      try { if (d.from) localStorage.setItem("mpName", d.from); } catch {}
+      render(); msg($("dStatus"), "Posted on the fan wall for everyone to see.", true);
+    } catch (err) { msg($("dStatus"), err.message, false); }
+    finally { $("dWall").disabled = false; }
+  });
+  drawDed();
+
   if (adminKey) api("/api/admin/check", { admin: true }).catch(() => { adminKey = ""; try { sessionStorage.removeItem("mpAdmin"); } catch {} showAdmin(); });
-  paint(); showAdmin(); load();
+  paint(); showAdmin(); load(); loadPoll();
 })();
 </script>
 </body>
