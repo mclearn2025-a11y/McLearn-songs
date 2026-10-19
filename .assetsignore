@@ -9,3 +9,5 @@ package.json
 package-lock.json
 tools
 tools/*
+videos/story
+videos/story/*

@@ -13,6 +13,7 @@ on purpose: this page is for promotion, programmers and music supervisors.
 | `.assetsignore` | files Cloudflare should not serve publicly |
 | `legal.html` | privacy notice and terms of use |
 | `audio/*.mp3` | twelve 45-second excerpts |
+| `videos/story/` | full-length story videos (HD, over Cloudflare's 25 MB limit) — kept on GitHub only, listed in `.assetsignore` |
 | `og-image.png` | preview image shown when the link is shared |
 | `_headers` | security headers and cache rules |
 
