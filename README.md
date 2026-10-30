@@ -19,6 +19,12 @@ on purpose: this page is for promotion, programmers and music supervisors.
 | `og-image.png` | preview image shown when the link is shared |
 | `_headers` | security headers and cache rules |
 
+## Live pages
+
+- Songs (for programmers and supervisors): https://mclearn-songs.mclearn2025.workers.dev/
+- MP fan page: https://mclearn-songs.mclearn2025.workers.dev/mp/
+- McLearn Media Reading Room: https://mclearn-songs.mclearn2025.workers.dev/books/ (one book: add `#book-one` through `#book-four`)
+
 ## Deploying
 
 No build step. Cloudflare deploys the `mclearn-songs` Worker from this repo
