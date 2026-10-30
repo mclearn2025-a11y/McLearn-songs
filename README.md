@@ -8,6 +8,8 @@ on purpose: this page is for promotion, programmers and music supervisors.
 |---|---|
 | `index.html` | the ad page — release dates, 45-second snippets, contact |
 | `mp/index.html` | the MP fan page — songs, news, email sign-up, fan wall |
+| `books/index.html` | the McLearn Media Reading Room — opening pages of all four novels to read or hear, songs named in each book, readers'-list sign-up |
+| `books/covers/`, `books/og-books.png` | book covers and the link-preview image for the Reading Room |
 | `worker.js` | answers `/api/*` for the fan page (comments, news, sign-ups) |
 | `wrangler.jsonc` | Cloudflare settings: site files + worker + storage |
 | `.assetsignore` | files Cloudflare should not serve publicly |
@@ -31,7 +33,8 @@ on every push to `main`, using `wrangler.jsonc`.
 ### Running the fan page
 - Open `/mp/`, scroll to the bottom, tap **Artist sign-in**, enter the password.
 - Signed in, you can post news, remove any post (tap **Remove** twice), and
-  download the fan email list as a spreadsheet file.
+  download the fan email list as a spreadsheet file. The `signed_up_from` column says
+  whether each address joined from the music page, the Reading Room, or both.
 - The password stays signed in only until the browser tab closes.
 - Fans can't post links, and each visitor can post once a minute.
 
