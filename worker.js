@@ -182,7 +182,12 @@ async function handle(request, env) {
     const email = clean(body.email, 120).toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail(400, "That email address doesn't look right. Check it and try again.");
     if (await cooldown(env, request, "s")) return fail(429, "Give it a minute, then try again.");
-    await env.FANS.put(`e:${email}`, "", { metadata: { ts: Date.now() } });
+    // Where they signed up: "music" (the MP fan page) or "books" (the Reading Room).
+    const src = body.src === "books" ? "books" : "music";
+    const prev = await env.FANS.getWithMetadata(`e:${email}`);
+    const had = prev?.metadata?.src ? String(prev.metadata.src).split("+") : [];
+    const from = had.includes(src) ? had : [...had, src];
+    await env.FANS.put(`e:${email}`, "", { metadata: { ts: prev?.metadata?.ts || Date.now(), src: from.join("+") } });
     return json({ ok: true }, 201);
   }
 
@@ -230,11 +235,11 @@ async function handle(request, env) {
         for (const k of page.keys) {
           // Keep spreadsheet apps from treating an address as a formula.
           const email = k.name.slice(2).replace(/^[=+\-@]/, "'$&").replace(/[",\n]/g, "");
-          rows.push([email, new Date(k.metadata?.ts || 0).toISOString()]);
+          rows.push([email, new Date(k.metadata?.ts || 0).toISOString(), k.metadata?.src || "music"]);
         }
         cursor = page.list_complete ? undefined : page.cursor;
       } while (cursor);
-      const csv = "email,signed_up\n" + rows.map((r) => r.join(",")).join("\n") + "\n";
+      const csv = "email,signed_up,signed_up_from\n" + rows.map((r) => r.join(",")).join("\n") + "\n";
       return new Response(csv, {
         headers: {
           "content-type": "text/csv; charset=utf-8",
