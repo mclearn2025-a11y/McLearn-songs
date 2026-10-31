@@ -137,6 +137,11 @@ a{color:var(--acc)}
 .gotit{display:grid;gap:10px}
 .dl{display:flex;flex-wrap:wrap;gap:10px}
 .dl a{text-decoration:none}
+.voicerow select{max-width:100%;min-width:0;flex:1 1 220px}
+.voicehelp{font-family:var(--f-label);font-size:.84rem;color:var(--ink-2);max-width:62ch}
+.voicehelp summary{cursor:pointer;color:var(--acc)}
+.voicehelp ul{margin:.6em 0;padding-left:1.1em;display:grid;gap:.4em}
+.voicehelp p{margin:0}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#16120d;font-family:var(--f-label);font-size:.85rem;padding:10px 16px;border-radius:2px;opacity:0;transition:opacity .25s;pointer-events:none}
 .toast.on{opacity:1}
 
@@ -201,7 +206,22 @@ a{color:var(--acc)}
         <label class="note" for="rate">Speed</label>
         <select id="rate"><option value="0.9">Slower</option><option value="1" selected>Normal</option><option value="1.12">Faster</option></select>
       </div>
+      <div class="controls voicerow" id="voiceRow" hidden>
+        <label class="note" for="voice">Voice</label>
+        <select id="voice"></select>
+        <button class="btn" id="tryVoice" type="button">Try this voice</button>
+      </div>
       <span class="note" id="readNote"></span>
+      <details class="voicehelp" id="voiceHelp" hidden>
+        <summary>Want a better voice? Add one on your device</summary>
+        <ul>
+          <li><b>iPhone and iPad:</b> Settings → Accessibility → Spoken Content → Voices → English. Download an <i>Enhanced</i> or <i>Premium</i> voice, then reload this page.</li>
+          <li><b>Mac:</b> System Settings → Accessibility → Spoken Content → System Voice → Manage Voices.</li>
+          <li><b>Android:</b> Settings → Accessibility (or General management) → Text-to-speech → Speech Services by Google → install voice data. Chrome works best.</li>
+          <li><b>Windows:</b> Settings → Time &amp; language → Speech → Manage voices → Add voices. Microsoft Edge has the most natural voices.</li>
+        </ul>
+        <p>The voices come from your own phone or computer, so the list is different on every device.</p>
+      </details>
     </div>
     <article class="page" id="page"></article>
     <div class="fade" aria-hidden="true"></div>
@@ -331,14 +351,53 @@ function renderTracks(b){
 // read aloud with the device's own voice
 const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
 let queue=[],speaking=false,paused=false,voice=null;
-function pickVoice(){
-  if(!synth) return;
-  const vs=synth.getVoices().filter(v=>/^en(-|_)/i.test(v.lang));
-  const pref=[/natural/i,/premium/i,/enhanced/i,/Samantha/,/Aaron/,/Google US English/,/Daniel/,/Microsoft (Guy|Aria|Jenny)/];
-  voice=null;for(const r of pref){const v=vs.find(v=>r.test(v.name));if(v){voice=v;break;}}
-  if(!voice) voice=vs.find(v=>/en-US/i.test(v.lang))||vs[0]||null;
+const VOICE_KEY='rr-voice';
+function savedVoice(){try{return localStorage.getItem(VOICE_KEY)}catch(e){return null}}
+function rememberVoice(uri){try{localStorage.setItem(VOICE_KEY,uri)}catch(e){}}
+function bestVoice(vs){
+  const en=vs.filter(v=>/^en([-_]|$)/i.test(v.lang));
+  const pool=en.length?en:vs;
+  const pref=[/premium/i,/enhanced/i,/natural/i,/neural/i,/online/i,/Google US English/,/Samantha/,/Ava/,/Aaron/,/Daniel/,/Microsoft (Aria|Jenny|Guy)/];
+  for(const r of pref){const v=pool.find(v=>r.test(v.name)&&/en[-_]US/i.test(v.lang))||pool.find(v=>r.test(v.name));if(v)return v;}
+  return pool.find(v=>/en[-_]US/i.test(v.lang)&&v.default)||pool.find(v=>/en[-_]US/i.test(v.lang))||pool.find(v=>v.default)||pool[0]||null;
 }
-if(synth){pickVoice();synth.onvoiceschanged=pickVoice;}
+function label(v){
+  let n=v.name.replace(/^Microsoft\s+/,'').replace(/\s+Online\s+\(Natural\)/,' (natural)').replace(/\s*-\s*English.*$/,'');
+  const region={'en-US':'US','en-GB':'UK','en-AU':'Australia','en-IE':'Ireland','en-ZA':'South Africa','en-IN':'India','en-CA':'Canada','en-NZ':'New Zealand'}[v.lang.replace('_','-')];
+  return n+(region?' · '+region:' · '+v.lang)+(v.default?' (device default)':'');
+}
+function fillVoices(){
+  if(!synth) return;
+  const vs=synth.getVoices();
+  if(!vs.length) return;
+  const sel=$('voice');
+  const keep=voice&&voice.voiceURI||savedVoice();
+  const en=vs.filter(v=>/^en([-_]|$)/i.test(v.lang)).sort((a,b)=>a.lang.localeCompare(b.lang)||a.name.localeCompare(b.name));
+  const other=vs.filter(v=>!/^en([-_]|$)/i.test(v.lang)).sort((a,b)=>a.lang.localeCompare(b.lang)||a.name.localeCompare(b.name));
+  sel.innerHTML='';
+  const add=(group,list)=>{if(!list.length)return;const g=document.createElement('optgroup');g.label=group;list.forEach(v=>{const o=document.createElement('option');o.value=v.voiceURI;o.textContent=label(v);g.appendChild(o);});sel.appendChild(g);};
+  add('English',en);add('Other languages',other);
+  voice=vs.find(v=>v.voiceURI===keep)||bestVoice(vs);
+  if(voice) sel.value=voice.voiceURI;
+  $('voiceRow').hidden=false;$('voiceHelp').hidden=false;
+}
+if(synth){
+  fillVoices();
+  if('onvoiceschanged' in synth) synth.addEventListener('voiceschanged',fillVoices);
+  let tries=0;const poll=setInterval(()=>{tries++;if(synth.getVoices().length||tries>20){clearInterval(poll);fillVoices();}},250);
+  $('voice').addEventListener('change',()=>{
+    const v=synth.getVoices().find(x=>x.voiceURI===$('voice').value);if(!v)return;
+    voice=v;rememberVoice(v.voiceURI);
+    if(speaking){const now=document.querySelector('.page p.now');const all=[...document.querySelectorAll('#page p')];synth.cancel();queue=now?all.slice(all.indexOf(now)):all;paused=false;$('play').textContent='Pause';speakNext();}
+  });
+  $('tryVoice').addEventListener('click',()=>{
+    if(speaking) stopSpeech();
+    clip.pause();resetClip();
+    synth.cancel();
+    const u=new SpeechSynthesisUtterance('This is how the McLearn Media Reading Room will sound on your device.');
+    if(voice){u.voice=voice;u.lang=voice.lang;}u.rate=parseFloat($('rate').value)*0.95;synth.speak(u);
+  });
+}
 else{$('play').disabled=true;$('rate').disabled=true;$('readNote').textContent+=' · Listening isn’t available in this browser.';}
 
 function mark(el){document.querySelectorAll('.page p.now').forEach(p=>p.classList.remove('now'));if(el){el.classList.add('now');const r=el.getBoundingClientRect();if(r.top<80||r.bottom>innerHeight-40)el.scrollIntoView({behavior:'smooth',block:'center'});}}
