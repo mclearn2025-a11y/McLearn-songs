@@ -131,6 +131,12 @@ a{color:var(--acc)}
 .fine{font-family:var(--f-label);font-size:.76rem;color:var(--ink-2)}
 .fine a{color:var(--ink-2)}
 .series ol a{color:var(--ink-2)}
+.gift{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;margin:14px 0}
+.gift img{width:96px;height:auto;box-shadow:0 8px 20px rgba(0,0,0,.5);border-radius:2px}
+.gift p{margin:0}
+.gotit{display:grid;gap:10px}
+.dl{display:flex;flex-wrap:wrap;gap:10px}
+.dl a{text-decoration:none}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#16120d;font-family:var(--f-label);font-size:.85rem;padding:10px 16px;border-radius:2px;opacity:0;transition:opacity .25s;pointer-events:none}
 .toast.on{opacity:1}
 
@@ -207,8 +213,12 @@ a{color:var(--acc)}
 
   <section class="join" aria-labelledby="joinHead">
     <div>
-      <h3 id="joinHead">Be first to hear about new chapters and release dates</h3>
-      <p>Join the readers' list for new excerpts, release dates for each book, and first word on chapters read by the author. One email when there's news. Leave any time.</p>
+      <h3 id="joinHead">Join the readers' list and get a free story</h3>
+      <div class="gift">
+        <img src="/books/free/the-pencil-sharpener.jpg" alt="The Pencil Sharpener cover" width="120" height="180">
+        <p><strong>The Pencil Sharpener.</strong> Brandon, 1979. A restless nine-year-old named Marcus Jennings, a broken pencil sharpener, and the teacher who sets it on the back table and says, see if you can get it going. A complete story, free when you join.</p>
+      </div>
+      <p>After that: new excerpts, release dates, and first word on chapters read by the author. One email when there's news. Leave any time.</p>
     </div>
     <form class="mailbox" id="joinForm" novalidate>
       <label class="label" for="joinEmail">Your email</label>
@@ -218,6 +228,10 @@ a{color:var(--acc)}
       </div>
       <div class="hp" aria-hidden="true"><label for="joinWeb">Leave this empty</label><input type="text" id="joinWeb" tabindex="-1" autocomplete="off"></div>
       <p class="msg" id="joinMsg" role="status"></p>
+      <div class="gotit" id="gotIt" hidden>
+        <span class="label">Your free story</span>
+        <div class="dl"><a class="btn solid" href="/books/free/the-pencil-sharpener.pdf" target="_blank" rel="noopener">Read it (PDF)</a><a class="btn" href="/books/free/the-pencil-sharpener.epub">E-book (EPUB)</a></div>
+      </div>
       <span class="fine">We use your email only to send McLearn Media news. <a href="/legal.html">Privacy &amp; Terms</a></span>
     </form>
   </section>
@@ -291,7 +305,7 @@ $('joinForm').addEventListener('submit',async e=>{
     const r=await fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email,website:$('joinWeb').value,src:'books'})});
     const d=await r.json().catch(()=>({}));
     if(!r.ok) throw new Error(d.error||'Something went wrong. Try again.');
-    $('joinEmail').value='';m.textContent='You\u2019re on the readers\u2019 list. News comes to you first.';m.classList.add('ok');
+    $('joinEmail').value='';m.textContent='You\u2019re on the readers\u2019 list. Here\u2019s your story.';m.classList.add('ok');$('gotIt').hidden=false;
   }catch(err){m.textContent=err.message||'Something went wrong. Try again.';m.classList.add('bad');}
   finally{$('joinBtn').disabled=false;}
 });
