@@ -183,7 +183,8 @@ async function handle(request, env) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail(400, "That email address doesn't look right. Check it and try again.");
     if (await cooldown(env, request, "s")) return fail(429, "Give it a minute, then try again.");
     // Where they signed up: "music" (the MP fan page) or "books" (the Reading Room).
-    const src = body.src === "books" ? "books" : "music";
+    // "music" (fan page), "books" (Reading Room) or "books-<channel>" from a tracking link like /books/?from=tiktok
+    const src = /^books(-[a-z0-9-]{1,20})?$/.test(String(body.src || "")) ? String(body.src) : "music";
     const prev = await env.FANS.getWithMetadata(`e:${email}`);
     const had = prev?.metadata?.src ? String(prev.metadata.src).split("+") : [];
     const from = had.includes(src) ? had : [...had, src];
