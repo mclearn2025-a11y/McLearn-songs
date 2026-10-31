@@ -24,6 +24,7 @@ on purpose: this page is for promotion, programmers and music supervisors.
 - Songs (for programmers and supervisors): https://mclearn-songs.mclearn2025.workers.dev/
 - MP fan page: https://mclearn-songs.mclearn2025.workers.dev/mp/
 - McLearn Media Reading Room: https://mclearn-songs.mclearn2025.workers.dev/books/ (one book: add `#book-one` through `#book-four`)
+  - Free story for readers'-list sign-ups: `books/free/` (The Pencil Sharpener, PDF and EPUB)
 
 ## Deploying
 
