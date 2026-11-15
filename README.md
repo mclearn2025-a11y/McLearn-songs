@@ -23,7 +23,7 @@ on purpose: this page is for promotion, programmers and music supervisors.
 
 - Songs (for programmers and supervisors): https://mclearn-songs.mclearn2025.workers.dev/
 - MP fan page: https://mclearn-songs.mclearn2025.workers.dev/mp/
-- McLearn Media Reading Room: https://mclearn-songs.mclearn2025.workers.dev/books/ (one book: add `#book-one` through `#book-four`)
+- McLearn Media Reading Room: https://mclearn-songs.mclearn2025.workers.dev/books/ (one book: add `#book-one` through `#book-four`, or `#before-i-knew-your-name` for the standalone)
   - Free story for readers'-list sign-ups: `books/free/` (The Pencil Sharpener, PDF and EPUB)
   - Tracking links: add `?from=` and a channel name, e.g. `/books/?from=tiktok` or `/books/?from=lemuria#book-one`. Sign-ups from that link show as `books-tiktok` in the `signed_up_from` column.
 
